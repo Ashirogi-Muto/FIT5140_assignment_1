@@ -7,27 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96B4C48D24F67B4900C33B42 /* Exhibition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C48C24F67B4900C33B42 /* Exhibition.swift */; };
+		96B4C48F24F67C5000C33B42 /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C48E24F67C5000C33B42 /* Plant.swift */; };
+		96B4C49124F69DBB00C33B42 /* ExhibitionScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */; };
 		96E34E2424F4BA3D009AF848 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E2324F4BA3D009AF848 /* AppDelegate.swift */; };
 		96E34E2624F4BA3D009AF848 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E2524F4BA3D009AF848 /* SceneDelegate.swift */; };
-		96E34E2824F4BA3D009AF848 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E2724F4BA3D009AF848 /* FirstViewController.swift */; };
-		96E34E2A24F4BA3D009AF848 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E2924F4BA3D009AF848 /* SecondViewController.swift */; };
 		96E34E2D24F4BA3D009AF848 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E34E2B24F4BA3D009AF848 /* Main.storyboard */; };
 		96E34E3024F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E2E24F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld */; };
 		96E34E3224F4BA40009AF848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96E34E3124F4BA40009AF848 /* Assets.xcassets */; };
 		96E34E3524F4BA40009AF848 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96E34E3324F4BA40009AF848 /* LaunchScreen.storyboard */; };
+		96E34E3D24F4DB5C009AF848 /* HomeScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E34E3C24F4DB5C009AF848 /* HomeScreenController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96B4C48C24F67B4900C33B42 /* Exhibition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exhibition.swift; sourceTree = "<group>"; };
+		96B4C48E24F67C5000C33B42 /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
+		96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionScreenController.swift; sourceTree = "<group>"; };
 		96E34E2024F4BA3D009AF848 /* Garden Exhibitor Aid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Garden Exhibitor Aid.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E34E2324F4BA3D009AF848 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96E34E2524F4BA3D009AF848 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		96E34E2724F4BA3D009AF848 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		96E34E2924F4BA3D009AF848 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		96E34E2C24F4BA3D009AF848 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96E34E2F24F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Garden_Exhibitor_Aid.xcdatamodel; sourceTree = "<group>"; };
 		96E34E3124F4BA40009AF848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96E34E3424F4BA40009AF848 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		96E34E3624F4BA40009AF848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96E34E3C24F4DB5C009AF848 /* HomeScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		96B4C48B24F67B1000C33B42 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				96B4C48C24F67B4900C33B42 /* Exhibition.swift */,
+				96B4C48E24F67C5000C33B42 /* Plant.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
 		96E34E1724F4BA3D009AF848 = {
 			isa = PBXGroup;
 			children = (
@@ -60,15 +73,16 @@
 		96E34E2224F4BA3D009AF848 /* Garden Exhibitor Aid */ = {
 			isa = PBXGroup;
 			children = (
+				96B4C48B24F67B1000C33B42 /* DataModel */,
 				96E34E2324F4BA3D009AF848 /* AppDelegate.swift */,
 				96E34E2524F4BA3D009AF848 /* SceneDelegate.swift */,
-				96E34E2724F4BA3D009AF848 /* FirstViewController.swift */,
-				96E34E2924F4BA3D009AF848 /* SecondViewController.swift */,
 				96E34E2B24F4BA3D009AF848 /* Main.storyboard */,
 				96E34E3124F4BA40009AF848 /* Assets.xcassets */,
 				96E34E3324F4BA40009AF848 /* LaunchScreen.storyboard */,
 				96E34E3624F4BA40009AF848 /* Info.plist */,
 				96E34E2E24F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld */,
+				96E34E3C24F4DB5C009AF848 /* HomeScreenController.swift */,
+				96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */,
 			);
 			path = "Garden Exhibitor Aid";
 			sourceTree = "<group>";
@@ -144,11 +158,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E34E2A24F4BA3D009AF848 /* SecondViewController.swift in Sources */,
+				96B4C49124F69DBB00C33B42 /* ExhibitionScreenController.swift in Sources */,
 				96E34E3024F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld in Sources */,
-				96E34E2824F4BA3D009AF848 /* FirstViewController.swift in Sources */,
+				96E34E3D24F4DB5C009AF848 /* HomeScreenController.swift in Sources */,
 				96E34E2424F4BA3D009AF848 /* AppDelegate.swift in Sources */,
+				96B4C48F24F67C5000C33B42 /* Plant.swift in Sources */,
 				96E34E2624F4BA3D009AF848 /* SceneDelegate.swift in Sources */,
+				96B4C48D24F67B4900C33B42 /* Exhibition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +311,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QXTQMS2VQ4;
 				INFOPLIST_FILE = "Garden Exhibitor Aid/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -314,7 +330,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QXTQMS2VQ4;
 				INFOPLIST_FILE = "Garden Exhibitor Aid/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
