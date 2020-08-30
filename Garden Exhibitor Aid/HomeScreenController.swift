@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class HomeScreenController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var homeScreenMap: MKMapView!
@@ -18,28 +19,61 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         homeScreenMap.delegate = self
         let initialRegion = CLLocationCoordinate2D(latitude: -37.830187, longitude: 144.979649)
         homeScreenMap.centerLocation(initialRegion)
         coordinates.append(CLLocationCoordinate2D(latitude: -37.830043, longitude: 144.979198))
         coordinates.append(CLLocationCoordinate2D(latitude: -37.829721, longitude: 144.979606))
         coordinates.append(CLLocationCoordinate2D(latitude: -37.829365, longitude: 144.978833))
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return
+        }
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
         
-        let plantOne = Plant(name: "Plant one", description: "Plant One", yearDiscovered: 1950, family: "Plant one", imageURL: "plant one")
-        let plantTwo = Plant(name: "Plant two", description: "Plant Two", yearDiscovered: 1950, family: "Plant Two", imageURL: "plant two")
-        let plantThree = Plant(name: "Plant Three", description: "Plant Three", yearDiscovered: 1950, family: "Plant Three", imageURL: "plant Three")
-        plants.append(plantOne)
-        plants.append(plantTwo)
-        plants.append(plantThree)
-        let exhOne = Exhibition(name: "Exhibit One", description: "Exhibit One", plants: plants, coordinate: coordinates[0])
-        let exhTwo = Exhibition(name: "Exhibit Two", description: "Exhibit Two", plants: plants, coordinate: coordinates[1])
-        let exhThree = Exhibition(name: "Exhibit Three", description: "Exhibit Three", plants: plants, coordinate: coordinates[2])
-        exhibitions.append(exhOne)
-        exhibitions.append(exhTwo)
-        exhibitions.append(exhThree)
-        homeScreenMap.addAnnotation(exhOne)
-        homeScreenMap.addAnnotation(exhTwo)
-        homeScreenMap.addAnnotation(exhThree)
+        let plantOne = Plant(context: managedObjectContext)
+        plantOne.family = "Family One"
+        plantOne.id = UUID()
+        plantOne.imageUrl = "image url"
+        plantOne.name = "Plant One"
+        plantOne.plantDescription = "Plant One"
+        plantOne.yearDiscovered = 1992
+        
+        let plantTwo = Plant(context: managedObjectContext)
+        plantTwo.family = "Family Two"
+        plantTwo.id = UUID()
+        plantTwo.imageUrl = "image url"
+        plantTwo.name = "Plant Two"
+        plantTwo.plantDescription = "Plant Two"
+        plantTwo.yearDiscovered = 1990
+
+        
+        let exhibitionOne = Exhibition(context: managedObjectContext)
+        exhibitionOne.exhibitionDescription = "exhibition one"
+        exhibitionOne.id = UUID()
+        exhibitionOne.lat = -37.830043
+        exhibitionOne.lon = 144.979198
+        exhibitionOne.name = "Exhibition Name"
+        exhibitionOne.plants = NSSet.init(array: [plantOne, plantTwo])
+
+        do{
+//            try managedObjectContext.save()
+            let exhibits = try managedObjectContext.fetch(fetchRequest)
+            for exh in exhibits {
+                print("Exhibit Name: \(exh.name ?? "No exhibit name")")
+                print("Exhibit Id: \(exh.id?.uuidString ?? "No Id")")
+                let plants = exh.plants as! Set<Plant>
+                for plant in plants {
+                    print("Plant Name: \(plant.name ?? "No plant name")")
+                }
+            }
+            print("Saved")
+        } catch let error as NSError{
+            print("Could not save \(error), \(error.userInfo)")
+        }
+        
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {

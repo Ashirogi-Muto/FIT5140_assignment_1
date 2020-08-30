@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		960F14C824FBDD3A0009046E /* Exhibition+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C424FBDD3A0009046E /* Exhibition+CoreDataClass.swift */; };
+		960F14C924FBDD3A0009046E /* Exhibition+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C524FBDD3A0009046E /* Exhibition+CoreDataProperties.swift */; };
+		960F14CA24FBDD3A0009046E /* Plant+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */; };
+		960F14CB24FBDD3A0009046E /* Plant+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */; };
 		96B4C48D24F67B4900C33B42 /* Exhibition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C48C24F67B4900C33B42 /* Exhibition.swift */; };
 		96B4C48F24F67C5000C33B42 /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C48E24F67C5000C33B42 /* Plant.swift */; };
 		96B4C49124F69DBB00C33B42 /* ExhibitionScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */; };
@@ -20,6 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		960F14C424FBDD3A0009046E /* Exhibition+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exhibition+CoreDataClass.swift"; sourceTree = "<group>"; };
+		960F14C524FBDD3A0009046E /* Exhibition+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exhibition+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Plant+CoreDataClass.swift"; sourceTree = "<group>"; };
+		960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Plant+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		96B4C48C24F67B4900C33B42 /* Exhibition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exhibition.swift; sourceTree = "<group>"; };
 		96B4C48E24F67C5000C33B42 /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 		96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionScreenController.swift; sourceTree = "<group>"; };
@@ -48,6 +56,11 @@
 		96B4C48B24F67B1000C33B42 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				960F14C424FBDD3A0009046E /* Exhibition+CoreDataClass.swift */,
+				960F14C524FBDD3A0009046E /* Exhibition+CoreDataProperties.swift */,
+				960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */,
+				960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */,
+				96E34E2E24F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld */,
 				96B4C48C24F67B4900C33B42 /* Exhibition.swift */,
 				96B4C48E24F67C5000C33B42 /* Plant.swift */,
 			);
@@ -80,7 +93,6 @@
 				96E34E3124F4BA40009AF848 /* Assets.xcassets */,
 				96E34E3324F4BA40009AF848 /* LaunchScreen.storyboard */,
 				96E34E3624F4BA40009AF848 /* Info.plist */,
-				96E34E2E24F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld */,
 				96E34E3C24F4DB5C009AF848 /* HomeScreenController.swift */,
 				96B4C49024F69DBB00C33B42 /* ExhibitionScreenController.swift */,
 			);
@@ -158,8 +170,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				960F14C824FBDD3A0009046E /* Exhibition+CoreDataClass.swift in Sources */,
 				96B4C49124F69DBB00C33B42 /* ExhibitionScreenController.swift in Sources */,
 				96E34E3024F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld in Sources */,
+				960F14CB24FBDD3A0009046E /* Plant+CoreDataProperties.swift in Sources */,
+				960F14CA24FBDD3A0009046E /* Plant+CoreDataClass.swift in Sources */,
+				960F14C924FBDD3A0009046E /* Exhibition+CoreDataProperties.swift in Sources */,
 				96E34E3D24F4DB5C009AF848 /* HomeScreenController.swift in Sources */,
 				96E34E2424F4BA3D009AF848 /* AppDelegate.swift in Sources */,
 				96B4C48F24F67C5000C33B42 /* Plant.swift in Sources */,

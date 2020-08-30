@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Plant: NSObject {
+class PlantClass: NSObject {
     var name: String
     var plantDescription: String
     var yearDiscovered: Int

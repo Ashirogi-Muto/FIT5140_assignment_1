@@ -8,13 +8,13 @@
 
 import MapKit
 
-class Exhibition: NSObject, MKAnnotation {
+class ExhibitionClass: NSObject, MKAnnotation {
     var name: String
     var exhibitionDescription: String
-    var plants: [Plant]
+    var plants: [PlantClass]
     var coordinate: CLLocationCoordinate2D
     
-    init(name: String, description: String, plants: [Plant], coordinate: CLLocationCoordinate2D) {
+    init(name: String, description: String, plants: [PlantClass], coordinate: CLLocationCoordinate2D) {
         self.name = name
         self.exhibitionDescription = description
         self.plants = plants
