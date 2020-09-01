@@ -41,7 +41,11 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
             print("Error in fetching exhibits \(error.userInfo)")
         }
     }
+    @IBAction func sortByAscendingOrder(_ sender: Any) {
+    }
     
+    @IBAction func sortByDescendingOrder(_ sender: Any) {
+    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -120,7 +120,19 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="All Exhibits" id="k6m-fr-kof">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="PFJ-pc-EZD"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="ekb-AE-bvp"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" image="square.and.arrow.down.on.square.fill" catalog="system" id="QJn-Iq-ncf">
+                                <connections>
+                                    <action selector="sortByAscendingOrder:" destination="4Mk-JM-Xb6" id="Ly2-lY-gK7"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="square.and.arrow.up.on.square.fill" catalog="system" id="ELw-Mj-8bq">
+                                <connections>
+                                    <action selector="sortByDescendingOrder:" destination="4Mk-JM-Xb6" id="2d1-Cc-XbE"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IqJ-mO-4bu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -149,5 +161,7 @@
     </scenes>
     <resources>
         <image name="first" width="30" height="30"/>
+        <image name="square.and.arrow.down.on.square.fill" catalog="system" width="122" height="128"/>
+        <image name="square.and.arrow.up.on.square.fill" catalog="system" width="117" height="128"/>
     </resources>
 </document>
