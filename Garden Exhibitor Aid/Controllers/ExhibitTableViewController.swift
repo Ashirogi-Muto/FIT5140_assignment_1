@@ -13,7 +13,7 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
     var exhibitions: [Exhibition] = []
     var filteredExhibits: [Exhibition] = []
     let exhibitCell = "exhibitInfoCell"
-    
+    var sortOrder = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         loadAllExhibits()
@@ -41,11 +41,28 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
             print("Error in fetching exhibits \(error.userInfo)")
         }
     }
-    @IBAction func sortByAscendingOrder(_ sender: Any) {
+    
+    
+    @IBAction func sortExhibitions(_ sender: Any) {
+        if sortOrder == 0 || sortOrder == 1 {
+            self.filteredExhibits = self.filteredExhibits.sorted(by: { (exhibitFirst, exhibitNext) -> Bool in
+                let nameFirst: String = (exhibitFirst.name as AnyObject) as! String
+                let nameNext: String = (exhibitNext.name as AnyObject) as! String
+                sortOrder = 2
+                return nameFirst > nameNext
+            })
+        }
+        else {
+            self.filteredExhibits = self.filteredExhibits.sorted(by: { (exhibitFirst, exhibitNext) -> Bool in
+                let nameFirst: String = (exhibitFirst.name as AnyObject) as! String
+                let nameNext: String = (exhibitNext.name as AnyObject) as! String
+                sortOrder = 1
+                return nameFirst < nameNext
+            })
+        }
+        self.tableView.reloadData()
     }
     
-    @IBAction func sortByDescendingOrder(_ sender: Any) {
-    }
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -63,6 +80,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         let currentExhibit = filteredExhibits[indexPath.row]
         cell.exhibitName.text = currentExhibit.name
         cell.exhibitDescription.text = currentExhibit.exhibitionDescription
+        let image = UIImage(named: "plant")
+        cell.exhibitImage.image = image
         return cell
     }
     

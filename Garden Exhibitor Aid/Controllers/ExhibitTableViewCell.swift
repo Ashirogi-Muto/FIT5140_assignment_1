@@ -9,16 +9,17 @@
 import UIKit
 
 class ExhibitTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var exhibitIcon: UIImageView!
+    
     @IBOutlet weak var exhibitName: UILabel!
     @IBOutlet weak var exhibitDescription: UILabel!
-
+    
+    @IBOutlet weak var exhibitImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
