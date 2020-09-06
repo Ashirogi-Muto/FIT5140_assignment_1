@@ -87,9 +87,11 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
         else {
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             view.canShowCallout = true
-            view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             view.subtitleVisibility = MKFeatureVisibility.visible
+            let leftImageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
+            leftImageView.image = UIImage(named: "plant")
+            view.leftCalloutAccessoryView = leftImageView
         }
         return view
     }
