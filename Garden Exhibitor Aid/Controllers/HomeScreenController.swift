@@ -11,12 +11,14 @@ import MapKit
 import CoreData
 
 class HomeScreenController: UIViewController, MKMapViewDelegate {
+    
     @IBOutlet weak var homeScreenMap: MKMapView!
     var exhibitions: [Exhibition] = []
     var plants: [Plant] = []
     var coordinates: [CLLocationCoordinate2D] = []
     var exhibitAnnotations: [ExhibitAnnotation] = []
-    
+    var selectedAnnotationFromExhibitList: UUID? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let defaults = UserDefaults.standard
@@ -53,9 +55,21 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
         homeScreenMap.delegate = self
         let initialRegion = CLLocationCoordinate2D(latitude: -37.830187, longitude: 144.979649)
         homeScreenMap.centerLocation(initialRegion)
+
         //Add annotations
         for annotation in exhibitAnnotations {
             homeScreenMap.addAnnotation(annotation)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if selectedAnnotationFromExhibitList != nil {
+            for exhibit in exhibitAnnotations {
+                let id = exhibit.id
+                if id == selectedAnnotationFromExhibitList {
+                    self.homeScreenMap.selectAnnotation(exhibit, animated: true)
+                }
+            }
         }
     }
     

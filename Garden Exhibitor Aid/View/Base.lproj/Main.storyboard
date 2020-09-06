@@ -121,6 +121,7 @@
                     <navigationItem key="navigationItem" title="All Exhibits" id="k6m-fr-kof">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="ekb-AE-bvp"/>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="sort" id="AFt-Bg-E6k">
+                            <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-6"/>
                             <connections>
                                 <action selector="sortExhibitions:" destination="4Mk-JM-Xb6" id="W1i-wN-0Ne"/>
                             </connections>
