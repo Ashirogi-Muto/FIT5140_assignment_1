@@ -13,7 +13,6 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
     
     var exhibitions: [Exhibition] = []
     var filteredExhibits: [Exhibition] = []
-    let exhibitCell = "exhibitInfoCell"
     var sortOrder = 0
     
     override func viewDidLoad() {
@@ -86,7 +85,7 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: exhibitCell, for: indexPath) as! ExhibitTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.EXHIBIT_CELL_VIEW_IDENTIFIER, for: indexPath) as! ExhibitTableViewCell
         let currentExhibit = filteredExhibits[indexPath.row]
         cell.exhibitName.text = currentExhibit.name
         cell.exhibitDescription.text = currentExhibit.exhibitionDescription

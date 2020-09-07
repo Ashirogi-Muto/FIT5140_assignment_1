@@ -53,7 +53,8 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
         }
         
         homeScreenMap.delegate = self
-        let initialRegion = CLLocationCoordinate2D(latitude: -37.830187, longitude: 144.979649)
+        
+        let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         homeScreenMap.centerLocation(initialRegion)
 
         //Add annotations
@@ -99,8 +100,10 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         let exhibit = view.annotation as! ExhibitAnnotation
-        let id = exhibit.id.uuidString
-        print("ID \(id)")
+        let id = exhibit.id
+        let exhibitMasterController = ExhibitDetailMasterController()
+        exhibitMasterController.selectedExhibitId = id
+        self.present(exhibitMasterController, animated: true, completion: nil)
     }
 }
 

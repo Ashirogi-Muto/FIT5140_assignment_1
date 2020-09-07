@@ -7,84 +7,109 @@
 //
 
 import UIKit
+import CoreData
 
-class PlantTableViewController: UITableViewController {
+class PlantTableViewController: UITableViewController, UISearchBarDelegate {
+    var allPlants: [Plant] = []
+    var filteredPlants: [Plant] = []
+    var arePlantsSetByParent = false
+    var selectedPlantIds: [UUID] = []
+    
+    @IBOutlet weak var searchBar: UISearchBar!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        loadAllPlants()
+        tableView.allowsMultipleSelection = true
+        tableView.allowsSelectionDuringEditing = true
+        searchBar.delegate = self
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return filteredPlants.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.PLANT_CELL_VIEW_IDENTIFIER, for: indexPath) as! PlantTableViewCell
+        let currentPlant = filteredPlants[indexPath.row]
+        cell.plantName.text = currentPlant.name
+        let image = UIImage(named: "plant")
+        cell.plantImage.image = image
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.count > 0 {
+            filteredPlants = allPlants.filter({ (plant: Plant) -> Bool in
+                return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
+            })
+            performSearchPlantApiCall(searchText: searchText)
+        }
+        else {
+            filteredPlants = allPlants
+        }
+//        UIView.setAnimationsEnabled(true)
+//        tableView.beginUpdates()
+//        tableView.reloadSections(NSIndexSet(index: 1) as IndexSet, with: UITableView.RowAnimation.none)
+//        tableView.endUpdates()
+        tableView.reloadData()
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func loadAllPlants(){
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return
+        }
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Plant>(entityName: "Plant")
+        
+        do {
+            allPlants = try managedObjectContext.fetch(fetchRequest)
+            filteredPlants = allPlants
+        } catch let error as NSError {
+            print("Error in fetching plants \(error.userInfo)")
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedPlant = filteredPlants[indexPath.row]
+        selectedPlantIds.append(selectedPlant.id!)
+        print(selectedPlantIds)
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let unselectedPlant = filteredPlants[indexPath.row]
+        let index = selectedPlantIds.lastIndex(of: unselectedPlant.id!)
+        selectedPlantIds.remove(at: index!)
+        print(selectedPlantIds)
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func performSearchPlantApiCall(searchText: String) {
+        let finalUrl = Constants.TREFLE_BASE_URL + "&q=" + searchText
+        if let url = URL(string: finalUrl) {
+            let session = URLSession(configuration: .default)
+            let task = session.dataTask(with: url) { (data, response, error) in
+                if error != nil {
+                    print(error!)
+                    return
+                }
+                if let safeData = data {
+                   let decoder = JSONDecoder()
+                    do {
+                     let decodedData = try decoder.decode(PlantSearchResult.self, from: safeData)
+                    } catch {
+                        print("ERROR-> \(error)")
+                    }
+                }
+            }
+            task.resume()
+        }
     }
-    */
-
 }
