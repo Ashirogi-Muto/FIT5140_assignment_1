@@ -224,18 +224,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zzM-0A-Hdv">
-                                <rect key="frame" x="20" y="466" width="374" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1kL-vZ-xto">
+                                <rect key="frame" x="20" y="480" width="374" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Add Plants">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="loadPlantListView:" destination="64t-iy-vaz" eventType="touchUpInside" id="fuK-aa-zbW"/>
+                                    <segue destination="dh0-UY-r9q" kind="show" identifier="plantViewTable" id="lbi-80-pXY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BAB-0U-Cmb">
-                                <rect key="frame" x="20" y="525" width="374" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n49-KX-1yz">
+                                <rect key="frame" x="20" y="537" width="374" height="30"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -244,42 +245,40 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Jv8-lI-9nn" firstAttribute="leading" secondItem="zzM-0A-Hdv" secondAttribute="leading" id="07Q-em-gPp"/>
+                            <constraint firstItem="1kL-vZ-xto" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="0B9-eH-mjb"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="YHO-2V-GR8" secondAttribute="trailing" constant="20" id="2rE-1L-TUt"/>
-                            <constraint firstItem="Jv8-lI-9nn" firstAttribute="leading" secondItem="BAB-0U-Cmb" secondAttribute="leading" id="4sc-BV-3g3"/>
+                            <constraint firstItem="n49-KX-1yz" firstAttribute="top" secondItem="1kL-vZ-xto" secondAttribute="bottom" constant="27" id="7J9-dt-ZHF"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="EKe-Ew-sFP" secondAttribute="trailing" constant="20" id="96A-kw-MJa"/>
                             <constraint firstItem="YHO-2V-GR8" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="9Oj-A5-sjM"/>
                             <constraint firstItem="Yc9-0L-AZx" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="9Yo-Qg-lmK"/>
                             <constraint firstItem="EKe-Ew-sFP" firstAttribute="top" secondItem="Yc9-0L-AZx" secondAttribute="bottom" constant="10" id="ALJ-TY-Tg4"/>
-                            <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="BAB-0U-Cmb" secondAttribute="trailing" constant="20" id="Chf-ht-nrB"/>
-                            <constraint firstItem="Jv8-lI-9nn" firstAttribute="trailing" secondItem="BAB-0U-Cmb" secondAttribute="trailing" id="M9p-yi-8lL"/>
                             <constraint firstItem="YHO-2V-GR8" firstAttribute="top" secondItem="LQp-El-6jx" secondAttribute="top" constant="15" id="Mb2-9h-3Vi"/>
                             <constraint firstItem="Yc9-0L-AZx" firstAttribute="top" secondItem="beD-iV-gaS" secondAttribute="bottom" constant="8" id="Q8D-EA-Ib0"/>
                             <constraint firstItem="beD-iV-gaS" firstAttribute="top" secondItem="YHO-2V-GR8" secondAttribute="bottom" constant="10" id="RAX-Wa-odr"/>
+                            <constraint firstItem="n49-KX-1yz" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="RzL-79-eHN"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="beD-iV-gaS" secondAttribute="trailing" constant="20" id="VSy-Ki-QrO"/>
-                            <constraint firstItem="Jv8-lI-9nn" firstAttribute="trailing" secondItem="zzM-0A-Hdv" secondAttribute="trailing" id="Zrv-3O-dft"/>
-                            <constraint firstItem="zzM-0A-Hdv" firstAttribute="top" secondItem="Jv8-lI-9nn" secondAttribute="bottom" constant="15" id="ZxL-c3-Bfm"/>
                             <constraint firstItem="Jv8-lI-9nn" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="a8e-JB-WYB"/>
+                            <constraint firstItem="1kL-vZ-xto" firstAttribute="top" secondItem="Jv8-lI-9nn" secondAttribute="bottom" constant="29" id="aiY-RZ-xxp"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="Jv8-lI-9nn" secondAttribute="trailing" constant="20" id="cIo-SR-0ko"/>
-                            <constraint firstItem="BAB-0U-Cmb" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="cQh-6U-2cr"/>
                             <constraint firstItem="EKe-Ew-sFP" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="dW1-PD-Y1T"/>
                             <constraint firstItem="Jv8-lI-9nn" firstAttribute="top" secondItem="D3e-yN-Mfk" secondAttribute="bottom" constant="10" id="e3H-hn-vhx"/>
+                            <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="n49-KX-1yz" secondAttribute="trailing" constant="20" id="fgP-B6-45s"/>
                             <constraint firstItem="D3e-yN-Mfk" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="laV-J1-w7t"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="Yc9-0L-AZx" secondAttribute="trailing" constant="20" id="mlk-FR-U7o"/>
                             <constraint firstItem="beD-iV-gaS" firstAttribute="leading" secondItem="LQp-El-6jx" secondAttribute="leading" constant="20" id="mwF-MS-OXO"/>
                             <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="D3e-yN-Mfk" secondAttribute="trailing" constant="20" id="pW9-fH-Pmt"/>
                             <constraint firstItem="D3e-yN-Mfk" firstAttribute="top" secondItem="EKe-Ew-sFP" secondAttribute="bottom" constant="8" id="v0x-oh-3ba"/>
-                            <constraint firstItem="BAB-0U-Cmb" firstAttribute="top" secondItem="zzM-0A-Hdv" secondAttribute="bottom" constant="29" id="zKR-7m-4ui"/>
+                            <constraint firstItem="LQp-El-6jx" firstAttribute="trailing" secondItem="1kL-vZ-xto" secondAttribute="trailing" constant="20" id="wOC-1m-bnR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LQp-El-6jx"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add an Exhibition" id="R34-iQ-ipx"/>
                     <connections>
-                        <outlet property="addPlants" destination="zzM-0A-Hdv" id="lEP-BM-EwR"/>
+                        <outlet property="addPlants" destination="1kL-vZ-xto" id="Wck-Nk-aKu"/>
                         <outlet property="exhibitDescription" destination="EKe-Ew-sFP" id="VL6-77-w9k"/>
                         <outlet property="exhibitLocation" destination="Jv8-lI-9nn" id="7rG-2z-sY8"/>
                         <outlet property="exhibitName" destination="beD-iV-gaS" id="Lca-7y-T2g"/>
-                        <outlet property="saveExhibition" destination="BAB-0U-Cmb" id="9rj-GK-R6V"/>
+                        <outlet property="saveExhibition" destination="n49-KX-1yz" id="F80-oI-dCs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3bU-r7-3Em" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -368,16 +367,11 @@
             <objects>
                 <tableViewController storyboardIdentifier="plantView" id="dh0-UY-r9q" customClass="PlantTableViewController" customModule="Garden_Exhibitor_Aid" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelection="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fVn-t4-fEs">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="391"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <button key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Gwv-IE-TgZ">
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search Plants" id="b6G-cp-InP">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="Click To Add Plants"/>
-                        </button>
-                        <searchBar key="tableFooterView" contentMode="redraw" id="b6G-cp-InP">
-                            <rect key="frame" x="0.0" y="155.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
@@ -410,6 +404,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="plantDescription" destination="t5Y-QW-6WU" id="knj-PQ-MaM"/>
                                     <outlet property="plantImage" destination="ySz-Z1-bD4" id="4V8-Pv-3B7"/>
                                     <outlet property="plantName" destination="1a1-s8-tRa" id="SJ4-fs-fSL"/>
                                 </connections>
@@ -421,6 +416,13 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="9Tg-b0-TaR">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="pNK-1I-Fr0">
+                            <connections>
+                                <action selector="setSelectedPlants:" destination="dh0-UY-r9q" id="mJg-NA-N6b"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="searchBar" destination="b6G-cp-InP" id="XsY-8L-1Mq"/>
@@ -428,9 +430,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TIn-y5-F0x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3379.7101449275365" y="-32.477678571428569"/>
+            <point key="canvasLocation" x="4157" y="-76"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="lbi-80-pXY"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="first" width="30" height="30"/>
         <image name="plant" width="1024" height="1024"/>

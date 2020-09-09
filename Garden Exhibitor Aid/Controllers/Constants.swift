@@ -16,4 +16,7 @@ struct Constants {
     static let PLANT_CELL_VIEW_IDENTIFIER = "plantCellView"
     static let PLANT_CONTROLLER_VIEW_ID = "plantView"
     static let TREFLE_BASE_URL = "https://trefle.io/api/v1/plants/search?token=Q52QNilfW0HTwMMF1N7t0wysbnzR_5LfQB2Hdj3vNO8"
+    static let PLANT_SEARCH_TABLE_CELL_IDENTIFIER = "searchViewCell"
+    static let PLANT_ADD_TABLE_CELL_IDENTIFIER = "addPlantButtonCell"
+    static let PLANT_VIEW_SEGUE_IDENTIDIER = "plantViewTable"
 }

@@ -8,14 +8,14 @@
 
 import UIKit
 import MapKit
-class AddExhibitionViewController: UIViewController, MKMapViewDelegate {
-    
+class AddExhibitionViewController: UIViewController, MKMapViewDelegate, DidSelectPlants {
     @IBOutlet weak var exhibitName: UITextField!
     @IBOutlet weak var exhibitDescription: UITextField!
     @IBOutlet weak var exhibitLocation: MKMapView!
-    @IBOutlet weak var addPlants: UIButton!
     @IBOutlet weak var saveExhibition: UIButton!
-
+    @IBOutlet weak var addPlants: UIButton!
+    var selectedPlants: [PlantModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addPlants.layer.cornerRadius = 5
@@ -26,6 +26,8 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate {
         let defaultAnnotation = ExhibitAnnotation(coordinate: initialRegion, title: Constants.DEFAULT_ANNOTATION_NAME, subtitle: "", id: UUID())
         exhibitLocation.addAnnotation(defaultAnnotation)
     }
+    
+    
     
     @IBAction func handleMapTap(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
@@ -40,26 +42,18 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate {
             exhibitLocation.addAnnotation(newSelectedAnnotation)
         }
     }
-    
-    @IBAction func loadPlantListView(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let plantView = storyboard.instantiateViewController(identifier: Constants.PLANT_CONTROLLER_VIEW_ID) as! PlantTableViewController
-        plantView.didMove(toParent: self)
-        self.present(plantView, animated: true) {
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.PLANT_VIEW_SEGUE_IDENTIDIER {
+            let destination = segue.destination as! PlantTableViewController
+            destination.delegate = self
+            destination.selectedPlants = selectedPlants
         }
     }
     
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func passSelectedPlants(plants: [PlantModel]) {
+        selectedPlants = plants
     }
-    */
-
 }
 
 extension MKMapView {

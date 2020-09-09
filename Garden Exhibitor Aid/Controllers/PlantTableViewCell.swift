@@ -12,6 +12,7 @@ class PlantTableViewCell: UITableViewCell {
     
     @IBOutlet weak var plantName: UILabel!
     @IBOutlet weak var plantImage: UIImageView!
+    @IBOutlet weak var plantDescription: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

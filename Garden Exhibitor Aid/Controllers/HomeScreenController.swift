@@ -101,9 +101,7 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         let exhibit = view.annotation as! ExhibitAnnotation
         let id = exhibit.id
-        let exhibitMasterController = ExhibitDetailMasterController()
-        exhibitMasterController.selectedExhibitId = id
-        self.present(exhibitMasterController, animated: true, completion: nil)
+        print("ID IS ->> \(id.uuidString)")
     }
 }
 

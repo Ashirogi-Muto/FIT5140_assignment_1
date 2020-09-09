@@ -10,12 +10,12 @@ import Foundation
 
 
 struct PlantSearchResult: Decodable {
-    let data: [PlantSearchItem]
+    let data: [PlantSearchItem]?
 }
 
 struct PlantSearchItem: Decodable {
     let common_name: String?
-    let year: Int?
+    let year: Int16?
     let image_url: String?
     let scientific_name: String?
     let family: String?
