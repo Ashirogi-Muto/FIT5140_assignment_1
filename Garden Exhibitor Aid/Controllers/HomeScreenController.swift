@@ -18,7 +18,7 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     var coordinates: [CLLocationCoordinate2D] = []
     var exhibitAnnotations: [ExhibitAnnotation] = []
     var selectedAnnotationFromExhibitList: UUID? = nil
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let defaults = UserDefaults.standard
@@ -28,7 +28,10 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
             initExhibit.creatDefaulteExhibits()
             defaults.set(true, forKey: "exhibitInit")
         }
-        
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -37,10 +40,11 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
         let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
         
         do{
+            exhibitAnnotations = []
             let exhibits = try managedObjectContext.fetch(fetchRequest)
             for exhibit in exhibits {
                 let name = exhibit.name ?? "No name"
-                let description = exhibit.exhibitionDescription!
+                let description = exhibit.exhibitionDescription ?? "No Description"
                 let lat = exhibit.lat
                 let lon = exhibit.lon
                 let id = exhibit.id!
@@ -50,21 +54,22 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
                 exhibitAnnotations.append(annotation)
             }
         } catch let error as NSError {
-            print("Error in deleting exhibits \(error.userInfo)")
+            print("Error in fetching exhibits \(error.userInfo)")
         }
         
         homeScreenMap.delegate = self
         
         let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         homeScreenMap.centerLocation(initialRegion)
-
-        //Add annotations
+        
+        //first remove previous annotations
+        let allAnnotations = homeScreenMap.annotations
+        homeScreenMap.removeAnnotations(allAnnotations)
+        //Then add all the available annotations
         for annotation in exhibitAnnotations {
             homeScreenMap.addAnnotation(annotation)
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        //infalte the selected annotation if any
         if selectedAnnotationFromExhibitList != nil {
             for exhibit in exhibitAnnotations {
                 let id = exhibit.id

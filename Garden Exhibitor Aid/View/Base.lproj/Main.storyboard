@@ -390,7 +390,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search Plants" id="b6G-cp-InP">
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search Plants" id="FU8-em-6NG">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -445,7 +445,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="searchBar" destination="b6G-cp-InP" id="XsY-8L-1Mq"/>
+                        <outlet property="searchBar" destination="FU8-em-6NG" id="asT-75-lMZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TIn-y5-F0x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

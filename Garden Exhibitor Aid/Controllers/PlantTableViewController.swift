@@ -29,9 +29,11 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
         tableView.allowsMultipleSelection = true
         tableView.allowsSelectionDuringEditing = true
         searchBar.delegate = self
-        indicator.style = UIActivityIndicatorView.Style.medium
-        indicator.center = self.tableView.center
-        self.view.addSubview(indicator)
+        indicator.style = UIActivityIndicatorView.Style.large
+        indicator.center = tableView.center
+        indicator.hidesWhenStopped = true
+        indicator.backgroundColor = UIColor.clear
+        view.addSubview(indicator)
     }
     
     // MARK: - Table view data source
@@ -74,13 +76,10 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count > 0 {
             indicator.startAnimating()
-            indicator.backgroundColor = UIColor.clear
             filteredPlants = filteredPlants.filter({ (plant: PlantModel) -> Bool in
                 return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
             })
             performSearchPlantApiCall(searchText: searchText)
-            indicator.stopAnimating()
-            indicator.hidesWhenStopped = true
         }
         tableView.reloadData()
     }
@@ -141,7 +140,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                 let name = plant.name!
                 if selectedPlants.contains(where: { $0.name == name }){
                     let indexPath = IndexPath(row: index, section: 0)
-                    self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+                    self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 }
             }
         } catch let error as NSError {
@@ -172,6 +171,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                                     if name.count > 0 {
                                         let plantModel = PlantModel(name: name, plantDescription: "No Description", imageUrl: imageUrl, yearDiscovered: year, family: family, id: nil)
                                         self.filteredPlants.append(plantModel)
+                                        self.indicator.stopAnimating()
                                         self.tableView.reloadData()
                                     }
                                 }

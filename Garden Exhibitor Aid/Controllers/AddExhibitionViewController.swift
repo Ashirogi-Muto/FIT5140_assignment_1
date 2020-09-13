@@ -34,6 +34,8 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         exhibitLocation.setRegion(initialRegion)
         let defaultAnnotation = ExhibitAnnotation(coordinate: initialRegion, title: Constants.DEFAULT_ANNOTATION_NAME, subtitle: "", id: UUID(), image: "plant")
         exhibitLocation.addAnnotation(defaultAnnotation)
+        exhibitName.delegate = self
+        exhibitDescription.delegate = self
     }
     
     @IBAction func handleMapTap(_ sender: UITapGestureRecognizer) {
@@ -50,20 +52,16 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Constants.PLANT_VIEW_SEGUE_IDENTIDIER {
-            let destination = segue.destination as! PlantTableViewController
-            destination.delegate = self
-            destination.selectedPlants = selectedPlants
+    func passSelectedPlants(plants: [PlantModel]) {
+        selectedPlants = plants
+        let count = selectedPlants.count
+        if count > 0 {
+            addPlants.setTitle("\(count) plants", for: .normal)
         }
     }
     
-    func passSelectedPlants(plants: [PlantModel]) {
-        selectedPlants = plants
-    }
-    
     @IBAction func saveExhibition(_ sender: Any) {
-        let isFormValid = isInputValid()
+        let isFormValid = isExhibitionFormValid()
         if isFormValid == true {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
                 else {
@@ -92,6 +90,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
             let imageName = "\(exhibitionId.uuidString).png"
             exhibitionToBeSaved.image = imageName
+
             let hasImageBeenSaved = saveImageOfExhibition(image: exhibitionImage.image!, name: imageName)
             if hasImageBeenSaved == true {
                 do{
@@ -115,7 +114,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         present(alertController, animated: true, completion: nil)
     }
     
-    func isInputValid() -> Bool {
+    func isExhibitionFormValid() -> Bool {
         var isValid = true
         //Change the colors to default before validating the data
         setDefaultStyleForFormElements()
@@ -133,6 +132,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
                 bg.backgroundColor = .red
             }
             exhibitDescription.attributedPlaceholder = NSAttributedString(string: "Exhibition Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+            isValid = false
         }
         
         let annotations = exhibitLocation.annotations
@@ -141,11 +141,20 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             if annotation?.coordinate.latitude == Constants.DEFAULT_MAP_LAT && annotation?.coordinate.longitude == Constants.DEFAULT_MAP_LON {
                 locationLabel.text = "Choose a new location!"
                 locationLabel.textColor = .red
+                isValid = false
             }
         }
+
         if selectedPlants.count == 0 {
             addPlants.backgroundColor = .red
+            isValid = false
         }
+        
+        if exhibitionImage.image == nil {
+            addImage.backgroundColor = .red
+            isValid = false
+        }
+        
         return isValid
     }
     
@@ -163,7 +172,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             bg.backgroundColor = .none
         }
         addPlants.backgroundColor = .systemBlue
-        
+        addImage.backgroundColor = .systemBlue
         exhibitName.attributedPlaceholder = NSAttributedString(string: "Exhibition Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
         exhibitDescription.attributedPlaceholder = NSAttributedString(string: "Exhibition Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
@@ -222,6 +231,23 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             print(error.localizedDescription)
             return false
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+          if segue.identifier == Constants.PLANT_VIEW_SEGUE_IDENTIDIER {
+              let destination = segue.destination as! PlantTableViewController
+              destination.delegate = self
+              destination.selectedPlants = selectedPlants
+          }
+      }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
 

@@ -14,12 +14,7 @@ class ExhibitionDetailViewController: UIViewController {
     @IBOutlet weak var exhibitDescription: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("VIEW DID LOAD____>>>>")
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("I AM EXHHHHHHHHH")
     }
     
 
