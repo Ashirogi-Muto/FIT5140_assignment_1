@@ -13,13 +13,15 @@ class ExhibitAnnotation: NSObject, MKAnnotation {
     let coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
+    var image: String?
     let id: UUID
 
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, id: UUID) {
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String, id: UUID, image: String) {
         self.coordinate = coordinate
         self.title = title
         self.subtitle = subtitle
         self.id = id
+        self.image = image
         super.init()
     }
 }

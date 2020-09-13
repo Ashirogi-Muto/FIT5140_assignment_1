@@ -45,7 +45,8 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
                 let lon = exhibit.lon
                 let id = exhibit.id!
                 let coordinates = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-                let annotation = ExhibitAnnotation(coordinate: coordinates, title: name, subtitle: description, id: id)
+                let imageName = exhibit.image ?? "no image"
+                let annotation = ExhibitAnnotation(coordinate: coordinates, title: name, subtitle: description, id: id, image: imageName)
                 exhibitAnnotations.append(annotation)
             }
         } catch let error as NSError {
@@ -91,10 +92,17 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
             view.subtitleVisibility = MKFeatureVisibility.visible
             let leftImageView = UIImageView(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
-            leftImageView.image = UIImage(named: "plant")
+            leftImageView.image = getExhibitImageForAnnotation(name: annotation.image!)
             view.leftCalloutAccessoryView = leftImageView
         }
         return view
+    }
+    
+    func getExhibitImageForAnnotation(name: String) -> UIImage {
+        if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+            return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
+        }
+        return UIImage(named: "plant")!
     }
     
     

@@ -27,6 +27,10 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         definesPresentationContext = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     func loadAllExhibits() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
@@ -36,8 +40,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
         
         do{
-            let exhibits = try managedObjectContext.fetch(fetchRequest)
-            exhibitions = exhibits
+            exhibitions = try managedObjectContext.fetch(fetchRequest)
+            print(exhibitions.count)
         } catch let error as NSError {
             print("Error in fetching exhibits \(error.userInfo)")
         }
@@ -89,9 +93,16 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         let currentExhibit = filteredExhibits[indexPath.row]
         cell.exhibitName.text = currentExhibit.name
         cell.exhibitDescription.text = currentExhibit.exhibitionDescription
-        let image = UIImage(named: "plant")
-        cell.exhibitImage.image = image
+        cell.exhibitImage.image = getExhibitImage(name: currentExhibit.image ?? "no image")
         return cell
+    }
+    
+    func getExhibitImage(name: String) -> UIImage {
+        print(name)
+        if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+            return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
+        }
+        return UIImage(named: "plant")!
     }
     
     func updateSearchResults(for searchController: UISearchController) {

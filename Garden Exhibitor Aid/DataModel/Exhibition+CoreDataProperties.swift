@@ -2,7 +2,7 @@
 //  Exhibition+CoreDataProperties.swift
 //  Garden Exhibitor Aid
 //
-//  Created by Kshitij Pandey on 30/08/20.
+//  Created by Kshitij Pandey on 13/09/20.
 //  Copyright © 2020 Kshitij Pandey. All rights reserved.
 //
 //
@@ -17,11 +17,12 @@ extension Exhibition {
         return NSFetchRequest<Exhibition>(entityName: "Exhibition")
     }
 
-    @NSManaged public var name: String?
     @NSManaged public var exhibitionDescription: String?
+    @NSManaged public var id: UUID?
     @NSManaged public var lat: Double
     @NSManaged public var lon: Double
-    @NSManaged public var id: UUID?
+    @NSManaged public var name: String?
+    @NSManaged public var image: String?
     @NSManaged public var plants: NSSet?
 
 }

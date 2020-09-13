@@ -19,6 +19,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     var arePlantsSetByParent = false
     var selectedPlants: [PlantModel] = []
     var delegate: DidSelectPlants?
+    var indicator = UIActivityIndicatorView()
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -28,6 +29,9 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
         tableView.allowsMultipleSelection = true
         tableView.allowsSelectionDuringEditing = true
         searchBar.delegate = self
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.tableView.center
+        self.view.addSubview(indicator)
     }
     
     // MARK: - Table view data source
@@ -69,10 +73,14 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count > 0 {
+            indicator.startAnimating()
+            indicator.backgroundColor = UIColor.clear
             filteredPlants = filteredPlants.filter({ (plant: PlantModel) -> Bool in
                 return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
             })
             performSearchPlantApiCall(searchText: searchText)
+            indicator.stopAnimating()
+            indicator.hidesWhenStopped = true
         }
         tableView.reloadData()
     }
