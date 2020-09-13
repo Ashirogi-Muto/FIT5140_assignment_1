@@ -18,7 +18,8 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     var coordinates: [CLLocationCoordinate2D] = []
     var exhibitAnnotations: [ExhibitAnnotation] = []
     var selectedAnnotationFromExhibitList: UUID? = nil
-    
+    var selectedAnnotationIdForDetail: UUID? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let defaults = UserDefaults.standard
@@ -113,8 +114,15 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         let exhibit = view.annotation as! ExhibitAnnotation
-        let id = exhibit.id
-        print("ID IS ->> \(id.uuidString)")
+        selectedAnnotationIdForDetail = exhibit.id
+        performSegue(withIdentifier: Constants.EXHIBIT_DETAIL_SEGUE_IDENTIFIER, sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.EXHIBIT_DETAIL_SEGUE_IDENTIFIER {
+            let destination = segue.destination as! ExhibitDetailViewController
+            destination.selectedExhibitId = selectedAnnotationIdForDetail
+        }
     }
 }
 

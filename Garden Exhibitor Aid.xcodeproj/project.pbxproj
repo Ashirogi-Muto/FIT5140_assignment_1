@@ -11,10 +11,9 @@
 		960F14C924FBDD3A0009046E /* Exhibition+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C524FBDD3A0009046E /* Exhibition+CoreDataProperties.swift */; };
 		960F14CA24FBDD3A0009046E /* Plant+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */; };
 		960F14CB24FBDD3A0009046E /* Plant+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */; };
-		96239044250533E00045844E /* ExhibitDetailMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239043250533E00045844E /* ExhibitDetailMasterController.swift */; };
+		96239044250533E00045844E /* ExhibitDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239043250533E00045844E /* ExhibitDetailViewController.swift */; };
 		96239046250534630045844E /* PlantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239045250534630045844E /* PlantTableViewController.swift */; };
 		962390482505347B0045844E /* PlantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962390472505347B0045844E /* PlantTableViewCell.swift */; };
-		962A718B2505DC5400020610 /* ExhibitionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962A718A2505DC5400020610 /* ExhibitionDetailViewController.swift */; };
 		962A718D2506098900020610 /* AddExhibitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962A718C2506098900020610 /* AddExhibitionViewController.swift */; };
 		962A718F25060A7200020610 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962A718E25060A7200020610 /* Constants.swift */; };
 		962A71912506801800020610 /* PlantSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962A71902506801800020610 /* PlantSearch.swift */; };
@@ -37,10 +36,9 @@
 		960F14C524FBDD3A0009046E /* Exhibition+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Exhibition+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Plant+CoreDataClass.swift"; sourceTree = "<group>"; };
 		960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Plant+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		96239043250533E00045844E /* ExhibitDetailMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitDetailMasterController.swift; sourceTree = "<group>"; };
+		96239043250533E00045844E /* ExhibitDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitDetailViewController.swift; sourceTree = "<group>"; };
 		96239045250534630045844E /* PlantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantTableViewController.swift; sourceTree = "<group>"; };
 		962390472505347B0045844E /* PlantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantTableViewCell.swift; sourceTree = "<group>"; };
-		962A718A2505DC5400020610 /* ExhibitionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailViewController.swift; sourceTree = "<group>"; };
 		962A718C2506098900020610 /* AddExhibitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionViewController.swift; sourceTree = "<group>"; };
 		962A718E25060A7200020610 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		962A71902506801800020610 /* PlantSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantSearch.swift; sourceTree = "<group>"; };
@@ -86,10 +84,9 @@
 				96E34E3C24F4DB5C009AF848 /* HomeScreenController.swift */,
 				96654BFD24FDFDA9000D7512 /* ExhibitTableViewController.swift */,
 				96654BFF24FDFE24000D7512 /* ExhibitTableViewCell.swift */,
-				96239043250533E00045844E /* ExhibitDetailMasterController.swift */,
+				96239043250533E00045844E /* ExhibitDetailViewController.swift */,
 				96239045250534630045844E /* PlantTableViewController.swift */,
 				962390472505347B0045844E /* PlantTableViewCell.swift */,
-				962A718A2505DC5400020610 /* ExhibitionDetailViewController.swift */,
 				962A718C2506098900020610 /* AddExhibitionViewController.swift */,
 				962A718E25060A7200020610 /* Constants.swift */,
 			);
@@ -218,7 +215,6 @@
 				96654BF224FD10EF000D7512 /* InitExhibits.swift in Sources */,
 				96D6230325072CB5003EAC92 /* PlantModel.swift in Sources */,
 				96E34E3024F4BA3D009AF848 /* Garden_Exhibitor_Aid.xcdatamodeld in Sources */,
-				962A718B2505DC5400020610 /* ExhibitionDetailViewController.swift in Sources */,
 				960F14CB24FBDD3A0009046E /* Plant+CoreDataProperties.swift in Sources */,
 				96654C0024FDFE24000D7512 /* ExhibitTableViewCell.swift in Sources */,
 				960F14CA24FBDD3A0009046E /* Plant+CoreDataClass.swift in Sources */,
@@ -229,7 +225,7 @@
 				962A71912506801800020610 /* PlantSearch.swift in Sources */,
 				96654BFE24FDFDA9000D7512 /* ExhibitTableViewController.swift in Sources */,
 				96654BF424FD16A3000D7512 /* ExhibitAnnotation.swift in Sources */,
-				96239044250533E00045844E /* ExhibitDetailMasterController.swift in Sources */,
+				96239044250533E00045844E /* ExhibitDetailViewController.swift in Sources */,
 				962A718D2506098900020610 /* AddExhibitionViewController.swift in Sources */,
 				96E34E2624F4BA3D009AF848 /* SceneDelegate.swift in Sources */,
 				962A718F25060A7200020610 /* Constants.swift in Sources */,

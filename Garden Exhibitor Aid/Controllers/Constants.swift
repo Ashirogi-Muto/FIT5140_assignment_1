@@ -19,4 +19,6 @@ struct Constants {
     static let PLANT_SEARCH_TABLE_CELL_IDENTIFIER = "searchViewCell"
     static let PLANT_ADD_TABLE_CELL_IDENTIFIER = "addPlantButtonCell"
     static let PLANT_VIEW_SEGUE_IDENTIDIER = "plantViewTable"
+    static let EXHIBIT_DETAIL_SEGUE_IDENTIFIER = "exhibitDetailSegue"
+    static let EXHIBHITION_DETAIL_PLANT_VIEW_CELL_IDENTIFIER = "exhibitDetailPlantCell"
 }

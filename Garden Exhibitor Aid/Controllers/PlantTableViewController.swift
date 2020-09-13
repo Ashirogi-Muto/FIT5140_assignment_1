@@ -16,7 +16,6 @@ protocol DidSelectPlants {
 class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     var allPlants: [Plant] = []
     var filteredPlants: [PlantModel] = []
-    var arePlantsSetByParent = false
     var selectedPlants: [PlantModel] = []
     var delegate: DidSelectPlants?
     var indicator = UIActivityIndicatorView()
@@ -25,9 +24,9 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadAllPlants()
         tableView.allowsMultipleSelection = true
         tableView.allowsSelectionDuringEditing = true
+        loadAllPlants()
         searchBar.delegate = self
         indicator.style = UIActivityIndicatorView.Style.large
         indicator.center = tableView.center
@@ -134,7 +133,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                     filteredPlants.append(plant)
                 }
             }
-
+            
             //Add selection style to previously selected plants
             for (index, plant) in filteredPlants.enumerated() {
                 let name = plant.name!
