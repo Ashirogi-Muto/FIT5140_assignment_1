@@ -12,6 +12,7 @@ struct PlantModel {
     let name: String?
     let plantDescription: String?
     let imageUrl: String?
+    let scientificName: String?
     let yearDiscovered: Int16
     let family: String?
     let id: UUID?

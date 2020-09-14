@@ -123,7 +123,8 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                 let id = plant.id
                 let imageUrl = plant.imageUrl
                 let description = plant.plantDescription
-                let plantModel = PlantModel(name: name, plantDescription: description, imageUrl: imageUrl, yearDiscovered: year, family: family, id: id)
+                let scientificName = plant.scientificName
+                let plantModel = PlantModel(name: name, plantDescription: description, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
                 filteredPlants.append(plantModel)
             }
             
@@ -167,8 +168,9 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                                     let family = item.family ?? ""
                                     let imageUrl = item.image_url ?? "plant"
                                     let year = item.year ?? 0
+                                    let scientificName = item.scientific_name
                                     if name.count > 0 {
-                                        let plantModel = PlantModel(name: name, plantDescription: "No Description", imageUrl: imageUrl, yearDiscovered: year, family: family, id: nil)
+                                        let plantModel = PlantModel(name: name, plantDescription: "No Description", imageUrl: imageUrl,scientificName: scientificName, yearDiscovered: year, family: family, id: nil)
                                         self.filteredPlants.append(plantModel)
                                         self.indicator.stopAnimating()
                                         self.tableView.reloadData()

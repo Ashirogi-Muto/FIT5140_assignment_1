@@ -19,11 +19,13 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var exhibitDescription: UILabel!
     @IBOutlet weak var exhibitName: UILabel!
     @IBOutlet weak var plantList: UITableView!
+    var selectedPlant: Plant?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         plantList.delegate = self
         plantList.dataSource = self
+        plantList.tableFooterView = UIView()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -57,6 +59,18 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         cell.detailTextLabel?.text = currentPlant.plantDescription
         cell.imageView?.image = getExhibitImage(name: "plant")
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedPlant = plants[indexPath.row]
+        performSegue(withIdentifier: Constants.EDIT_PLANT_SEGUE_IDENTIFIER, sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.EDIT_PLANT_SEGUE_IDENTIFIER {
+            let destination = segue.destination as! EditPlantViewController
+            destination.plantId = selectedPlant?.id
+        }
     }
     
     

@@ -22,6 +22,7 @@ class InitExhibits {
         plantOne.imageUrl = "image url"
         plantOne.name = "Plant One"
         plantOne.plantDescription = "Plant One"
+        plantOne.scientificName = "Plant One"
         plantOne.yearDiscovered = 1992
         
         let plantTwo = Plant(context: managedObjectContext)
@@ -30,6 +31,7 @@ class InitExhibits {
         plantTwo.imageUrl = "image url"
         plantTwo.name = "Plant Two"
         plantTwo.plantDescription = "Plant Two"
+        plantTwo.scientificName = "Plant Two"
         plantTwo.yearDiscovered = 1990
         
         let plantThree = Plant(context: managedObjectContext)
@@ -37,6 +39,7 @@ class InitExhibits {
         plantThree.id = UUID()
         plantThree.imageUrl = "image url"
         plantThree.name = "Plant Three"
+        plantThree.scientificName = "Plant Three"
         plantThree.plantDescription = "Plant Three"
         plantThree.yearDiscovered = 1998
         
@@ -45,6 +48,7 @@ class InitExhibits {
         plantFour.id = UUID()
         plantFour.imageUrl = "image url"
         plantFour.name = "Plant Four"
+        plantFour.scientificName = "Plant Four"
         plantFour.plantDescription = "Plant Four"
         plantFour.yearDiscovered = 1997
         
@@ -53,6 +57,7 @@ class InitExhibits {
         plantFive.id = UUID()
         plantFive.imageUrl = "image url"
         plantFive.name = "Plant Five"
+        plantFive.scientificName = "Plant Five"
         plantFive.plantDescription = "Plant Five"
         plantFive.yearDiscovered = 1993
         
@@ -61,6 +66,7 @@ class InitExhibits {
         plantSix.id = UUID()
         plantSix.imageUrl = "image url"
         plantSix.name = "Plant Six"
+        plantSix.scientificName = "Plant Six"
         plantSix.plantDescription = "Plant Six"
         plantSix.yearDiscovered = 1992
         
@@ -69,6 +75,7 @@ class InitExhibits {
         plantSeven.id = UUID()
         plantSeven.imageUrl = "image url"
         plantSeven.name = "Plant Seven"
+        plantSeven.scientificName = "Plant Seven"
         plantSeven.plantDescription = "Plant seven"
         plantSeven.yearDiscovered = 1992
         
@@ -77,6 +84,7 @@ class InitExhibits {
         plantEight.id = UUID()
         plantEight.imageUrl = "image url"
         plantEight.name = "Plant Seven"
+        plantEight.scientificName = "Plant Seven"
         plantEight.plantDescription = "Plant seven"
         plantEight.yearDiscovered = 1992
         
@@ -85,6 +93,7 @@ class InitExhibits {
         plantNine.id = UUID()
         plantNine.imageUrl = "image url"
         plantNine.name = "Plant Nine"
+        plantNine.scientificName = "Plant Nine"
         plantNine.plantDescription = "Plant Nine"
         plantNine.yearDiscovered = 1991
         
@@ -93,6 +102,7 @@ class InitExhibits {
         plantTen.id = UUID()
         plantTen.imageUrl = "image url"
         plantTen.name = "Plant Ten"
+        plantTen.scientificName = "Plant Ten"
         plantTen.plantDescription = "Plant Ten"
         plantTen.yearDiscovered = 1991
         
