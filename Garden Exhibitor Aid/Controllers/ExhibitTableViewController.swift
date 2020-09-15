@@ -8,13 +8,20 @@
 
 import UIKit
 import CoreData
+import MapKit
+
+protocol ExhibitionDeleted {
+    func removeGeofence(name: String)
+}
+
 
 class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating {
     
     var exhibitions: [Exhibition] = []
     var filteredExhibits: [Exhibition] = []
     var sortOrder = 0
-    
+    var delegate: ExhibitionDeleted?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let searchController = UISearchController(searchResultsController: nil)
@@ -23,6 +30,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         searchController.searchBar.placeholder = "Search Exhibits"
         navigationItem.searchController = searchController
         definesPresentationContext = true
+        let homeScreenView = HomeScreenController()
+        delegate = homeScreenView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +49,6 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         do{
             exhibitions = try managedObjectContext.fetch(fetchRequest)
             filteredExhibits = exhibitions
-            print(exhibitions.count)
             tableView.reloadData()
         } catch let error as NSError {
             print("Error in fetching exhibits \(error.userInfo)")
@@ -105,7 +113,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
             }
             let managedObjectContext = appDelegate.persistentContainer.viewContext
             let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
-            let id = filteredExhibits[indexPath.row].id
+            let selectedExhibit = filteredExhibits[indexPath.row]
+            let id = selectedExhibit.id
             fetchRequest.predicate = NSPredicate(format: "%K == %@", "id", id! as CVarArg)
             if let result = try? managedObjectContext.fetch(fetchRequest) {
                 for item in result {
@@ -114,6 +123,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
             }
             do {
                 try managedObjectContext.save()
+                let name = selectedExhibit.name ?? "No name"
+                delegate?.removeGeofence(name: name)
                 loadAllExhibits()
             } catch  {
                 print("Could not delete")

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlantWasUpdated {
     var selectedExhibitId: UUID? = nil
     var commitPredicate: NSPredicate?
     var exhibit: Exhibition?
@@ -26,6 +26,17 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         plantList.delegate = self
         plantList.dataSource = self
         plantList.tableFooterView = UIView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadSelectedExhibition()
+    }
+    
+    func refreshPlantList() {
+        loadSelectedExhibition()
+    }
+    
+    func loadSelectedExhibition() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -42,6 +53,7 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 exhibitName.text = exhibit?.name
                 exhibitDescription.text = exhibit?.exhibitionDescription
                 exhibitImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
+                plantList.reloadData()
             }
         } catch let error as NSError {
             print("Error in deleting exhibits \(error.userInfo)")
@@ -56,7 +68,7 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         let cell = plantList.dequeueReusableCell(withIdentifier: Constants.PLANT_CELL_VIEW_IDENTIFIER, for: indexPath)
         let currentPlant = plants[indexPath.row]
         cell.textLabel?.text = currentPlant.name
-        cell.detailTextLabel?.text = currentPlant.plantDescription
+        cell.detailTextLabel?.text = currentPlant.scientificName
         cell.imageView?.image = getExhibitImage(name: "plant")
         return cell
     }
@@ -69,6 +81,7 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Constants.EDIT_PLANT_SEGUE_IDENTIFIER {
             let destination = segue.destination as! EditPlantViewController
+            destination.delegate = self
             destination.plantId = selectedPlant?.id
         }
     }

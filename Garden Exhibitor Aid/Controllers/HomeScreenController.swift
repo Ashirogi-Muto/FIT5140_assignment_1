@@ -10,8 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class HomeScreenController: UIViewController, MKMapViewDelegate {
-    
+class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, NewExhibtionCreated, ExhibitionDeleted {
     @IBOutlet weak var homeScreenMap: MKMapView!
     var exhibitions: [Exhibition] = []
     var plants: [Plant] = []
@@ -19,20 +18,52 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
     var exhibitAnnotations: [ExhibitAnnotation] = []
     var selectedAnnotationFromExhibitList: UUID? = nil
     var selectedAnnotationIdForDetail: UUID? = nil
-
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+
         let defaults = UserDefaults.standard
         let haveExhibitsInitialised = defaults.bool(forKey: "exhibitInit")
         if haveExhibitsInitialised != true {
-            let initExhibit = InitExhibits()
+            let initExhibit = InitializeExhibits()
             initExhibit.creatDefaulteExhibits()
             defaults.set(true, forKey: "exhibitInit")
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
+        setupHomeScreenMap()
+    }
+    
+    func setupHomeScreenMap() {
+        loadAllExhibitionsForMap()
+        homeScreenMap.delegate = self
+        
+        let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
+        homeScreenMap.centerLocation(initialRegion)
+        
+        //first remove previous annotations
+        let allAnnotations = homeScreenMap.annotations
+        homeScreenMap.removeAnnotations(allAnnotations)
+        //Then add all the available annotations
+        for annotation in exhibitAnnotations {
+            homeScreenMap.addAnnotation(annotation)
+        }
+        //infalte the selected annotation if any
+        if selectedAnnotationFromExhibitList != nil {
+            for exhibit in exhibitAnnotations {
+                let id = exhibit.id
+                if id == selectedAnnotationFromExhibitList {
+                    homeScreenMap.selectAnnotation(exhibit, animated: true)
+                }
+            }
+        }
+    }
+    
+    func loadAllExhibitionsForMap() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -53,32 +84,23 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
                 let imageName = exhibit.image ?? "no image"
                 let annotation = ExhibitAnnotation(coordinate: coordinates, title: name, subtitle: description, id: id, image: imageName)
                 exhibitAnnotations.append(annotation)
+                initiateGeofencing(coordinates: coordinates, name: name)
             }
         } catch let error as NSError {
             print("Error in fetching exhibits \(error.userInfo)")
         }
-        
-        homeScreenMap.delegate = self
-        
-        let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
-        homeScreenMap.centerLocation(initialRegion)
-        
-        //first remove previous annotations
-        let allAnnotations = homeScreenMap.annotations
-        homeScreenMap.removeAnnotations(allAnnotations)
-        //Then add all the available annotations
-        for annotation in exhibitAnnotations {
-            homeScreenMap.addAnnotation(annotation)
-        }
-        //infalte the selected annotation if any
-        if selectedAnnotationFromExhibitList != nil {
-            for exhibit in exhibitAnnotations {
-                let id = exhibit.id
-                if id == selectedAnnotationFromExhibitList {
-                    self.homeScreenMap.selectAnnotation(exhibit, animated: true)
-                }
-            }
-        }
+    }
+    
+    func initiateGeofencing(coordinates: CLLocationCoordinate2D, name: String) {
+        let geofencingCenter = CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude)
+        let geofencingRegion = CLCircularRegion(center: geofencingCenter, radius: 20, identifier: name)
+        geofencingRegion.notifyOnEntry = true
+        geofencingRegion.notifyOnExit = true
+        locationManager.startMonitoring(for: geofencingRegion)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        homeScreenMap.showsUserLocation = (status == .authorizedAlways)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -122,6 +144,18 @@ class HomeScreenController: UIViewController, MKMapViewDelegate {
         if segue.identifier == Constants.EXHIBIT_DETAIL_SEGUE_IDENTIFIER {
             let destination = segue.destination as! ExhibitDetailViewController
             destination.selectedExhibitId = selectedAnnotationIdForDetail
+        }
+    }
+    
+    func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String) {
+        initiateGeofencing(coordinates: coordinates, name: name)
+    }
+    
+    func removeGeofence(name: String) {
+        for region in locationManager.monitoredRegions {
+            guard let region = region as? CLCircularRegion, region.identifier == name else { continue }
+            print("DELTEING_____>>")
+            locationManager.stopMonitoring(for: region)
         }
     }
 }

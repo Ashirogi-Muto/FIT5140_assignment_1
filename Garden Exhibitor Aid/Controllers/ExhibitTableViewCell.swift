@@ -20,6 +20,13 @@ class ExhibitTableViewCell: UITableViewCell {
         // Initialization code
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Customize imageView like you need
+        exhibitImage.frame = CGRect(x: exhibitImage.frame.origin.x, y: exhibitImage.frame.origin.y, width: 56, height: 55.5)
+        exhibitImage.contentMode = UIView.ContentMode.scaleAspectFit
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

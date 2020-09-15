@@ -10,6 +10,10 @@ import UIKit
 import MapKit
 import Foundation
 
+protocol NewExhibtionCreated {
+    func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String)
+}
+
 class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DidSelectPlants, UITextFieldDelegate {
     
     @IBOutlet weak var exhibitName: UITextField!
@@ -22,13 +26,16 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     @IBOutlet weak var locationLabel: UILabel!
     var plantsToBeSaved: [Plant] = []
     var selectedPlants: [PlantModel] = []
-    
+    var delegate: NewExhibtionCreated?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         exhibitName.delegate = self
         exhibitDescription.delegate = self
         addPlants.layer.cornerRadius = 5
         addImage.layer.cornerRadius = 5
+        let homeScreenView = HomeScreenController()
+        delegate = homeScreenView
         let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         exhibitLocation.delegate = self
         exhibitLocation.setRegion(initialRegion)
@@ -95,7 +102,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             if hasImageBeenSaved == true {
                 do{
                     try managedObjectContext.save()
-                    print("Data Created")
+                    delegate?.initializeGeofencingForNewExhibition(coordinates: annotation!.coordinate, name: exhibitionToBeSaved.name!)
                     navigationController?.popViewController(animated: true)
                 } catch let error as NSError{
                     print("Could not save \(error), \(error.userInfo)")

@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class InitExhibits {
+class InitializeExhibits {
     func creatDefaulteExhibits(){
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
