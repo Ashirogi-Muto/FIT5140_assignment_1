@@ -8,54 +8,12 @@
 
 import UIKit
 import CoreData
-import CoreLocation
-import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
-    var window: UIWindow?
-    let locationManager = CLLocationManager()
-    
+class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        let options: UNAuthorizationOptions = [.badge, .sound, .alert]
-        UNUserNotificationCenter.current()
-            .requestAuthorization(options: options) { success, error in
-                if let error = error {
-                    print("Error: \(error)")
-                }
-        }
         return true
-    }
-    
-    func handleEvent(for region: CLRegion!, type: String) {
-        print("Geofence triggered! \(region.identifier)")
-        if UIApplication.shared.applicationState == .active {
-            guard let regionName = region?.identifier else { return }
-            let alert = UIAlertController(title: "Alert", message: "You're \(type) \(regionName)", preferredStyle: .alert)
-
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-
-            window?.rootViewController?.show(alert, sender: self)
-        } else {
-            // Otherwise present a local notification
-            guard let body = region?.identifier else { return }
-            let notificationContent = UNMutableNotificationContent()
-            notificationContent.body = body
-            notificationContent.sound = .default
-            notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-            let request = UNNotificationRequest(identifier: "location_change",
-                                                content: notificationContent,
-                                                trigger: trigger)
-            UNUserNotificationCenter.current().add(request) { error in
-                if let error = error {
-                    print("Error: \(error)")
-                }
-            }
-        }
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -122,24 +80,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
-}
-
-extension AppDelegate {
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            handleEvent(for: region, type: "entering")
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            handleEvent(for: region, type: "exiting")
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("ERROR IN GEO FENC -----> \(error)")
-    }
-    
 }
 

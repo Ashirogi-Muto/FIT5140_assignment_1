@@ -12,6 +12,7 @@
 		960F14CA24FBDD3A0009046E /* Plant+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C624FBDD3A0009046E /* Plant+CoreDataClass.swift */; };
 		960F14CB24FBDD3A0009046E /* Plant+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960F14C724FBDD3A0009046E /* Plant+CoreDataProperties.swift */; };
 		961C42AC250F857F0041B4FB /* EditPlantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961C42AB250F857F0041B4FB /* EditPlantViewController.swift */; };
+		961C42B42511D0D10041B4FB /* ExhibitDetailPantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961C42B32511D0D10041B4FB /* ExhibitDetailPantTableViewCell.swift */; };
 		96239044250533E00045844E /* ExhibitDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239043250533E00045844E /* ExhibitDetailViewController.swift */; };
 		96239046250534630045844E /* PlantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96239045250534630045844E /* PlantTableViewController.swift */; };
 		962390482505347B0045844E /* PlantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962390472505347B0045844E /* PlantTableViewCell.swift */; };
@@ -40,6 +41,7 @@
 		961C42AB250F857F0041B4FB /* EditPlantViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlantViewController.swift; sourceTree = "<group>"; };
 		961C42AD25106B7D0041B4FB /* default.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = default.gpx; path = ../../../../../../Downloads/default.gpx; sourceTree = "<group>"; };
 		961C42AE25106C3A0041B4FB /* two.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = two.gpx; path = ../../../../../../Downloads/two.gpx; sourceTree = "<group>"; };
+		961C42B32511D0D10041B4FB /* ExhibitDetailPantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitDetailPantTableViewCell.swift; sourceTree = "<group>"; };
 		96239043250533E00045844E /* ExhibitDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitDetailViewController.swift; sourceTree = "<group>"; };
 		96239045250534630045844E /* PlantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantTableViewController.swift; sourceTree = "<group>"; };
 		962390472505347B0045844E /* PlantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantTableViewCell.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				962A718C2506098900020610 /* AddExhibitionViewController.swift */,
 				962A718E25060A7200020610 /* Constants.swift */,
 				961C42AB250F857F0041B4FB /* EditPlantViewController.swift */,
+				961C42B32511D0D10041B4FB /* ExhibitDetailPantTableViewCell.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				961C42B42511D0D10041B4FB /* ExhibitDetailPantTableViewCell.swift in Sources */,
 				960F14C824FBDD3A0009046E /* Exhibition+CoreDataClass.swift in Sources */,
 				962390482505347B0045844E /* PlantTableViewCell.swift in Sources */,
 				96654BF224FD10EF000D7512 /* InitializeDefaultExhibits.swift in Sources */,

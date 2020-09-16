@@ -53,11 +53,9 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         plantScientificName.text = plant?.scientificName
         yearDiscovered.text = "\(String(describing: plant!.yearDiscovered))"
         let imageUrl = plant?.imageUrl
+        plantImage.image = UIImage(named: "plant")
         if imageUrl != nil && imageUrl != "image url" {
-            fetchImageFromUrl(urlString: imageUrl!)
-        }
-        else {
-            plantImage.image = UIImage(named: "plant")
+            loadPlantImage(imageUrl: imageUrl!)
         }
     }
     
@@ -134,6 +132,7 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
             plantFamily.attributedPlaceholder = NSAttributedString(string: "Enter a valid family", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         }
         if plantScientificName.text?.count == 0 {
+            isValid = false
             if let bg = plantScientificName?.subviews.first {
                 bg.backgroundColor = .red
             }
@@ -208,16 +207,6 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         return plant
     }
     
-    func fetchImageFromUrl(urlString: String) {
-        let imageUrl = URL(string: urlString)
-        if let data = try? Data(contentsOf: imageUrl!) {
-            plantImage.image = UIImage(data: data)
-        }
-        else {
-            plantImage.image = UIImage(named: "plant")
-        }
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -225,5 +214,19 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    func loadPlantImage(imageUrl: String){
+        let url = URL(string: imageUrl)
+        let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+            if error != nil {
+                self.plantImage.image = UIImage(named: "plant")
+                return
+            }
+            DispatchQueue.main.async {
+                self.plantImage.image = UIImage(data: data!)
+            }
+        }
+        task.resume()
     }
 }

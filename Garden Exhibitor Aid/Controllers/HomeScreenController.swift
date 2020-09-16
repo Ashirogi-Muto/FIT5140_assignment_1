@@ -19,12 +19,13 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
     var selectedAnnotationFromExhibitList: UUID? = nil
     var selectedAnnotationIdForDetail: UUID? = nil
     let locationManager = CLLocationManager()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
-
+        locationManager.startUpdatingLocation()
+        locationManager.distanceFilter = 20
         let defaults = UserDefaults.standard
         let haveExhibitsInitialised = defaults.bool(forKey: "exhibitInit")
         if haveExhibitsInitialised != true {
@@ -167,4 +168,3 @@ extension MKMapView {
         setCenter(location, animated: true)
     }
 }
-

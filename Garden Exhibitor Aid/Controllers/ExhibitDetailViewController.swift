@@ -14,7 +14,8 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     var commitPredicate: NSPredicate?
     var exhibit: Exhibition?
     var plants: [Plant] = []
-    
+    var images: [UIImage] = []
+
     @IBOutlet weak var exhibitImage: UIImageView!
     @IBOutlet weak var exhibitDescription: UILabel!
     @IBOutlet weak var exhibitName: UILabel!
@@ -53,6 +54,7 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
                 exhibitName.text = exhibit?.name
                 exhibitDescription.text = exhibit?.exhibitionDescription
                 exhibitImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
+                loadImagesAsynchronously()
                 plantList.reloadData()
             }
         } catch let error as NSError {
@@ -60,16 +62,26 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         plants.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = plantList.dequeueReusableCell(withIdentifier: Constants.PLANT_CELL_VIEW_IDENTIFIER, for: indexPath)
+        let cell = plantList.dequeueReusableCell(withIdentifier: Constants.PLANT_CELL_VIEW_IDENTIFIER, for: indexPath) as! ExhibitDetailPantTableViewCell
         let currentPlant = plants[indexPath.row]
-        cell.textLabel?.text = currentPlant.name
-        cell.detailTextLabel?.text = currentPlant.scientificName
-        cell.imageView?.image = getExhibitImage(name: "plant")
+        cell.plantName?.text = currentPlant.name!
+        cell.plantScientificName?.text = currentPlant.scientificName ?? ""
+        if images.count > 0 && images.count >= plants.count {
+            let currentImage = images[indexPath.row]
+            cell.plantImage?.image = currentImage
+        }
+        else {
+            cell.plantImage.image = UIImage(named: "plant")
+        }
         return cell
     }
     
@@ -86,11 +98,31 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-    
     func getExhibitImage(name: String) -> UIImage {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
         }
         return UIImage(named: "plant")!
+    }
+    
+    func loadImagesAsynchronously(){
+        for plant in plants {
+            let imageUrl = plant.imageUrl
+            if imageUrl != nil && imageUrl != "image url" {
+                let url = URL(string: imageUrl!)
+                let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+                    if error != nil {
+                        print("Error in loadImagesAsynchronously \(error.debugDescription)")
+                        return
+                    }
+                    let image = UIImage(data: data!)
+                    DispatchQueue.main.async {
+                        self.images.append(image!)
+                        self.plantList.reloadData()
+                    }
+                }
+                task.resume()
+            }
+        }
     }
 }

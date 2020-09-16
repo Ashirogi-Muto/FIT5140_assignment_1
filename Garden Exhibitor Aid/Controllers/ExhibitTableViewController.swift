@@ -95,6 +95,9 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         tabBarController?.selectedIndex = 0
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.EXHIBIT_CELL_VIEW_IDENTIFIER, for: indexPath) as! ExhibitTableViewCell

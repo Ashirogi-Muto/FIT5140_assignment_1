@@ -13,13 +13,13 @@ protocol DidSelectPlants {
     func passSelectedPlants(plants: [PlantModel])
 }
 
-class PlantTableViewController: UITableViewController, UISearchBarDelegate {
+class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITextFieldDelegate {
     var allPlants: [Plant] = []
     var filteredPlants: [PlantModel] = []
     var selectedPlants: [PlantModel] = []
     var delegate: DidSelectPlants?
     var indicator = UIActivityIndicatorView()
-    
+    var images: [UIImage] = []
     @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
@@ -27,6 +27,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
         tableView.allowsMultipleSelection = true
         tableView.allowsSelectionDuringEditing = true
         loadAllPlants()
+        tableView.tableFooterView = UIView()
         searchBar.delegate = self
         indicator.style = UIActivityIndicatorView.Style.large
         indicator.center = tableView.center
@@ -36,6 +37,10 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     // MARK: - Table view data source
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70
+    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -50,37 +55,34 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.PLANT_CELL_VIEW_IDENTIFIER, for: indexPath) as! PlantTableViewCell
         let currentPlant = filteredPlants[indexPath.row]
         let plantName = currentPlant.name
-        let plantDescription = currentPlant.plantDescription ?? "No description"
-        cell.plantName.text = plantName
-        cell.plantDescription.text = plantDescription
-        
-        //        if currentPlant.imageUrl == "image url" {
-        //            cell.plantImage.image = UIImage(named: "plant")
-        //        }
-        //        else {
-        //            let imageUrl = currentPlant.imageUrl!
-        //            let url = URL(string: imageUrl)
-        //            if let data = try? Data(contentsOf: url!) {
-        //                let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        //                imageView.image = UIImage(data: data)
-        //                cell.plantImage = imageView
-        //            }
-        //        }
-        
-        cell.plantImage.image = UIImage(named: "plant")
+        let plantScientificName = currentPlant.scientificName ?? "No scientific name available"
+        cell.plantName?.text = plantName
+        cell.plantScientificName?.text = plantScientificName
+
+        if images.count > 0 && indexPath.row <= images.count && images.count == filteredPlants.count {
+            let currentImage = images[indexPath.row]
+            cell.plantImage.image = currentImage
+        }
+        else {
+            cell.plantImage.image = UIImage(named: "plant")
+        }
         
         return cell
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.count > 0 {
-            indicator.startAnimating()
-            filteredPlants = filteredPlants.filter({ (plant: PlantModel) -> Bool in
-                return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
-            })
-            performSearchPlantApiCall(searchText: searchText)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, searchText.count > 0 else {
+            return
         }
+        searchBar.resignFirstResponder()
+        view.endEditing(true)
+        indicator.startAnimating()
+        filteredPlants = filteredPlants.filter({ (plant: PlantModel) -> Bool in
+            return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        performSearchPlantApiCall(searchText: searchText)
         tableView.reloadData()
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -151,7 +153,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
     func performSearchPlantApiCall(searchText: String) {
         let finalUrl = Constants.TREFLE_BASE_URL + "&q=" + searchText
         if let url = URL(string: finalUrl) {
-            let session = URLSession(configuration: .default)
+            let session = URLSession.shared
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
                     print(error!)
@@ -176,6 +178,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
                                         self.tableView.reloadData()
                                     }
                                 }
+                                self.loadImagesAsync()
                             }
                         }
                     } catch {
@@ -185,5 +188,29 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate {
             }
             task.resume()
         }
+    }
+    
+    func loadImagesAsync() {
+        for plant in filteredPlants {
+            let imageUrl = plant.imageUrl!
+            let url = URL(string: imageUrl)
+            let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
+                if error != nil {
+                    print("Error in fetching image \(error!)")
+                    DispatchQueue.main.async {
+                        print("Adding default image")
+                        self.images.append(UIImage(named: "plant")!)
+                    }
+                    return
+                }
+                DispatchQueue.main.async {
+                    let image = UIImage(data: data!)
+                    self.images.append(image!)
+                    //                    print("images -> \(self.images.count) all -> \(self.filteredPlants.count)")
+                }
+            }
+            task.resume()
+        }
+        tableView.reloadData()
     }
 }
