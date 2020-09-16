@@ -96,6 +96,11 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
             destination.delegate = self
             destination.plantId = selectedPlant?.id
         }
+        
+        if segue.identifier == Constants.EDIT_EXHIBITION_SEGUE_IDENTIFIER {
+            let destination = segue.destination as! AddExhibitionViewController
+            destination.passedExhibitionId = selectedExhibitId
+        }
     }
     
     func getExhibitImage(name: String) -> UIImage {
@@ -125,4 +130,10 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
             }
         }
     }
+    
+    
+    @IBAction func loadEditExhibitionView(_ sender: Any) {
+        performSegue(withIdentifier: Constants.EDIT_EXHIBITION_SEGUE_IDENTIFIER, sender: self)
+    }
+    
 }

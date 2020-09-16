@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import Foundation
+import CoreData
 
 protocol NewExhibtionCreated {
     func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String)
@@ -22,11 +23,14 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     @IBOutlet weak var exhibitLocation: MKMapView!
     @IBOutlet weak var addImage: UIButton!
     @IBOutlet weak var exhibitionImage: UIImageView!
-    @IBOutlet weak var saveExhibition: UIBarButtonItem!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var modifyExhibitionDetailsButton: UIButton!
+    var indicator = UIActivityIndicatorView()
+    var passedExhibitionId: UUID? = nil
     var plantsToBeSaved: [Plant] = []
     var selectedPlants: [PlantModel] = []
     var delegate: NewExhibtionCreated?
+    var passedExhibitionIdDataObject: NSManagedObject!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,54 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         exhibitLocation.addAnnotation(defaultAnnotation)
         exhibitName.delegate = self
         exhibitDescription.delegate = self
+        modifyExhibitionDetailsButton.layer.cornerRadius = 5
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        if passedExhibitionId != nil {
+            addImage.setTitle("Update Image", for: .normal)
+            loadPassedExhibitionIdDataAndSetTextFields()
+        }
+    }
+    
+    func loadPassedExhibitionIdDataAndSetTextFields() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return
+        }
+        let managedObjectContext = appDelegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", "id", passedExhibitionId! as CVarArg)
+        do {
+            let exhbition = try managedObjectContext.fetch(fetchRequest)
+            if exhbition.count > 0 {
+                let exhibit = exhbition.first
+                let plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
+                exhibitName.text = exhibit?.name
+                exhibitDescription.text = exhibit?.exhibitionDescription
+                exhibitionImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
+                typeCastPlantDataToModeForm(plantArray: plants)
+            }
+
+        } catch let error as NSError {
+            showAlert(title: "Oop!", message: "Could not load the exhibition", actionTitle: "Ok!")
+            modifyExhibitionDetailsButton.isEnabled = false
+            print("Error in deleting exhibits \(error.userInfo)")
+        }
+    }
+    
+    func typeCastPlantDataToModeForm(plantArray: [Plant]) {
+        for plant in plantArray {
+            let name = plant.name
+            let plantDescription = plant.plantDescription
+            let imageUrl = plant.imageUrl
+            let scientificName = plant.scientificName
+            let year = plant.yearDiscovered
+            let family = plant.family
+            let id = plant.id
+            let plantModel = PlantModel(name: name, plantDescription: plantDescription, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
+            selectedPlants.append(plantModel)
+        }
+        addPlants.setTitle("\(selectedPlants.count) plants", for: .normal)
     }
     
     @IBAction func handleMapTap(_ sender: UITapGestureRecognizer) {
@@ -67,7 +119,25 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         }
     }
     
-    @IBAction func saveExhibition(_ sender: Any) {
+    func presentSaveExhibitionErrorAlert() {
+        let alertController = UIAlertController(title: "Error", message: "Could not save the exhibition!", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    //Since this controller will be used for adding and updating the exhibition
+    //This func will decide what to do with the contents of the form
+    //based on if a previous exhibition ID is passed or not
+    @IBAction func modifyExhibitionDataBasedOnContext(_ sender: Any) {
+        if passedExhibitionId != nil {
+            updateExhibition()
+        }
+        else {
+            saveExhibition()
+        }
+    }
+    
+    func saveExhibition() {
         let isFormValid = isExhibitionFormValid()
         if isFormValid == true {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -97,7 +167,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
             exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
             let imageName = "\(exhibitionId.uuidString).png"
             exhibitionToBeSaved.image = imageName
-
+            
             let hasImageBeenSaved = saveImageOfExhibition(image: exhibitionImage.image!, name: imageName)
             if hasImageBeenSaved == true {
                 do{
@@ -115,10 +185,8 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         }
     }
     
-    func presentSaveExhibitionErrorAlert() {
-        let alertController = UIAlertController(title: "Error", message: "Could not save the exhibition!", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
-        present(alertController, animated: true, completion: nil)
+    func updateExhibition() {
+        let isFormValid = isExhibitionFormValid()
     }
     
     func isExhibitionFormValid() -> Bool {
@@ -151,9 +219,10 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
                 isValid = false
             }
         }
-
+        
         if selectedPlants.count == 0 {
             addPlants.backgroundColor = .red
+            addPlants.setTitle("Choose at least 3 plants!", for: .normal)
             isValid = false
         }
         
@@ -170,16 +239,23 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     }
     
     func setDefaultStyleForFormElements(){
-        locationLabel.text = "Choose a location"
-        locationLabel.textColor = .black
+        locationLabel.text = "Choose a location:"
+        locationLabel.textColor = Constants.APP_COLOR_DARK
         if let bg = exhibitName?.subviews.first {
             bg.backgroundColor = .none
         }
         if let bg = exhibitDescription?.subviews.first {
             bg.backgroundColor = .none
         }
-        addPlants.backgroundColor = .systemBlue
-        addImage.backgroundColor = .systemBlue
+        if selectedPlants.count > 0 {
+            addPlants.setTitle("\(selectedPlants.count) plants", for: .normal)
+        }
+        else {
+            addPlants.setTitle("Add Plants", for: .normal)
+        }
+        addPlants.backgroundColor = Constants.APP_COLOR_DARK
+        addImage.backgroundColor = Constants.APP_COLOR_DARK
+
         exhibitName.attributedPlaceholder = NSAttributedString(string: "Exhibition Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
         exhibitDescription.attributedPlaceholder = NSAttributedString(string: "Exhibition Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
@@ -241,12 +317,12 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-          if segue.identifier == Constants.PLANT_VIEW_SEGUE_IDENTIDIER {
-              let destination = segue.destination as! PlantTableViewController
-              destination.delegate = self
-              destination.selectedPlants = selectedPlants
-          }
-      }
+        if segue.identifier == Constants.PLANT_VIEW_SEGUE_IDENTIDIER {
+            let destination = segue.destination as! PlantTableViewController
+            destination.delegate = self
+            destination.selectedPlants = selectedPlants
+        }
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -255,6 +331,24 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    @IBAction func performAddPlantSegue(_ sender: Any) {
+        performSegue(withIdentifier: Constants.PLANT_VIEW_SEGUE_IDENTIDIER, sender: self)
+    }
+    
+    func getExhibitImage(name: String) -> UIImage {
+        if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+            return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
+        }
+        return UIImage(named: "plant")!
+    }
+    
+    func showAlert(title: String, message: String, actionTitle: String) {
+        let alertAction = UIAlertAction(title: actionTitle, style: .default, handler: nil)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(alertAction)
+        present(alert, animated: true, completion: nil)
     }
 }
 

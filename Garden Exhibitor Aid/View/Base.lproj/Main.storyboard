@@ -43,7 +43,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Home" image="first" id="acW-dT-cKf"/>
+                    <tabBarItem key="tabBarItem" title="Home" id="acW-dT-cKf">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <connections>
                         <outlet property="homeScreenMap" destination="013-k8-2l9" id="Bja-0S-DnP"/>
                         <segue destination="ooD-pi-c3q" kind="show" identifier="exhibitDetailSegue" id="Vaj-gK-Ew0"/>
@@ -132,12 +138,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="All Exhibits" id="k6m-fr-kof">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="ekb-AE-bvp">
+                            <color key="tintColor" red="0.55294117649999996" green="0.78039215689999997" blue="0.2470588235" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                             <connections>
                                 <segue destination="8PK-Gq-9xZ" kind="show" id="qkw-px-lZG"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="sort" id="AFt-Bg-E6k">
                             <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-6"/>
+                            <color key="tintColor" red="0.043137254901960784" green="0.58039215686274503" blue="0.27450980392156865" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="sortExhibitions:" destination="4Mk-JM-Xb6" id="W1i-wN-0Ne"/>
                             </connections>
@@ -152,7 +160,13 @@
         <scene sceneID="3iw-fG-xZe">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oSV-Cc-mOf" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="All" id="h6B-er-u1v"/>
+                    <tabBarItem key="tabBarItem" title="All" id="h6B-er-u1v">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2Sa-SK-CPG">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -249,15 +263,23 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exhibition Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DQW-R4-cM5">
                                 <rect key="frame" x="20" y="20" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plants in the exhibition:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DzM-8r-BHR">
                                 <rect key="frame" x="20" y="265" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mxG-hW-KCE">
+                                <rect key="frame" x="364" y="15" width="30" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Edit"/>
+                                <connections>
+                                    <action selector="loadEditExhibitionView:" destination="ooD-pi-c3q" eventType="touchUpInside" id="ADG-HE-ctP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -270,13 +292,16 @@
                             <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="DQW-R4-cM5" secondAttribute="trailing" constant="20" id="Mcm-Ph-5AS"/>
                             <constraint firstItem="Hex-Zy-d92" firstAttribute="top" secondItem="iUx-FF-YE3" secondAttribute="top" constant="55" id="Ngf-Nu-DhP"/>
                             <constraint firstItem="nqg-QT-65d" firstAttribute="top" secondItem="rea-6u-31u" secondAttribute="bottom" constant="10" id="O1y-pA-hqL"/>
+                            <constraint firstItem="mxG-hW-KCE" firstAttribute="top" secondItem="iUx-FF-YE3" secondAttribute="top" constant="15" id="PAB-MH-nSn"/>
                             <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="Woi-d1-QqK" secondAttribute="trailing" constant="20" id="RNr-9g-bb1"/>
                             <constraint firstItem="DzM-8r-BHR" firstAttribute="leading" secondItem="iUx-FF-YE3" secondAttribute="leading" constant="20" id="Tub-vJ-slC"/>
+                            <constraint firstItem="mxG-hW-KCE" firstAttribute="leading" secondItem="iUx-FF-YE3" secondAttribute="leading" constant="364" id="W80-Wu-cuy"/>
                             <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="DzM-8r-BHR" secondAttribute="trailing" constant="20" id="XLZ-a9-iu1"/>
                             <constraint firstItem="rea-6u-31u" firstAttribute="top" secondItem="Hex-Zy-d92" secondAttribute="bottom" constant="10" id="aYQ-nx-iyX"/>
                             <constraint firstItem="DzM-8r-BHR" firstAttribute="top" secondItem="nqg-QT-65d" secondAttribute="bottom" constant="20" id="cAK-Bc-WyM"/>
                             <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="Hex-Zy-d92" secondAttribute="trailing" constant="20" id="iD4-RB-qCN"/>
                             <constraint firstItem="Hex-Zy-d92" firstAttribute="leading" secondItem="iUx-FF-YE3" secondAttribute="leading" constant="20" id="jFJ-ud-L9c"/>
+                            <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="mxG-hW-KCE" secondAttribute="trailing" constant="20" id="koE-Up-o1W"/>
                             <constraint firstItem="iUx-FF-YE3" firstAttribute="trailing" secondItem="nqg-QT-65d" secondAttribute="trailing" constant="20" id="mcD-EB-NyX"/>
                             <constraint firstItem="rea-6u-31u" firstAttribute="leading" secondItem="iUx-FF-YE3" secondAttribute="leading" constant="20" id="yML-hF-Wyx"/>
                         </constraints>
@@ -289,6 +314,7 @@
                         <outlet property="exhibitName" destination="rea-6u-31u" id="8Xg-O6-bEr"/>
                         <outlet property="plantList" destination="Woi-d1-QqK" id="5WH-Gh-L8G"/>
                         <segue destination="gl0-fp-2mr" kind="show" identifier="editPlantSegue" id="g9b-m5-ZV6"/>
+                        <segue destination="8PK-Gq-9xZ" kind="show" identifier="editExhibitionSegue" id="zR5-ha-NVb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uAn-KD-bcI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -355,7 +381,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kZK-DQ-c7V">
                                 <rect key="frame" x="20" y="503" width="374" height="30"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Edit Plant">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -366,7 +392,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Plant Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LoJ-YU-xtR">
                                 <rect key="frame" x="156" y="8" width="103" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -420,7 +446,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xuy-qO-3fj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3047.826086956522" y="-320.08928571428572"/>
+            <point key="canvasLocation" x="3181" y="-682"/>
         </scene>
         <!--Add Exhibition View Controller-->
         <scene sceneID="st2-QG-TE7">
@@ -436,9 +462,9 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KuO-Ng-Qrc">
-                                <rect key="frame" x="300" y="490" width="94" height="28"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
+                                <rect key="frame" x="300" y="490" width="94" height="34"/>
+                                <color key="backgroundColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="8" maxX="10" maxY="8"/>
                                 <state key="normal" title="Add Image">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -447,13 +473,14 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPH-Ir-X47">
-                                <rect key="frame" x="20" y="490" width="94" height="30"/>
-                                <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="20" y="490" width="94" height="34"/>
+                                <color key="backgroundColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
                                 <state key="normal" title="Add Plants">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="dh0-UY-r9q" kind="show" identifier="plantViewTable" id="bGX-M4-5zb"/>
+                                    <action selector="performAddPlantSegue:" destination="8PK-Gq-9xZ" eventType="touchUpInside" id="JcT-rY-Tyi"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Exhibition Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AM2-8d-Kof">
@@ -464,7 +491,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Fs-6j-YzS">
                                 <rect key="frame" x="20" y="111" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="nuI-49-0fi">
@@ -480,21 +507,31 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bx6-8v-s6H">
                                 <rect key="frame" x="20" y="182" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a location:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ig-kd-38c">
                                 <rect key="frame" x="20" y="253" width="374" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EGD-Le-bcV">
-                                <rect key="frame" x="20" y="528" width="374" height="128"/>
+                                <rect key="frame" x="20" y="532" width="374" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="pyo-p5-Uug"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQB-6v-fVH">
+                                <rect key="frame" x="20" y="668" width="374" height="30"/>
+                                <color key="backgroundColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="modifyExhibitionDataBasedOnContext:" destination="8PK-Gq-9xZ" eventType="touchUpInside" id="VXq-QQ-BYt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -509,14 +546,17 @@
                             <constraint firstItem="EGD-Le-bcV" firstAttribute="top" secondItem="FPH-Ir-X47" secondAttribute="bottom" constant="8" id="Pw8-gL-eRz"/>
                             <constraint firstItem="fVY-Ki-CwB" firstAttribute="trailing" secondItem="KuO-Ng-Qrc" secondAttribute="trailing" constant="20" id="SVD-nf-GUK"/>
                             <constraint firstItem="fVY-Ki-CwB" firstAttribute="trailing" secondItem="EGD-Le-bcV" secondAttribute="trailing" constant="20" id="UET-Mc-ZO2"/>
+                            <constraint firstItem="EQB-6v-fVH" firstAttribute="top" secondItem="EGD-Le-bcV" secondAttribute="bottom" constant="8" id="Wkl-KX-hww"/>
                             <constraint firstItem="VaT-5b-b6C" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="Wnr-PB-68R"/>
                             <constraint firstItem="AM2-8d-Kof" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="Y9O-AG-EMt"/>
+                            <constraint firstItem="fVY-Ki-CwB" firstAttribute="trailing" secondItem="EQB-6v-fVH" secondAttribute="trailing" constant="20" id="YBY-Yt-ReR"/>
                             <constraint firstItem="Bx6-8v-s6H" firstAttribute="top" secondItem="AM2-8d-Kof" secondAttribute="bottom" constant="8" id="Z6V-kW-Vrl"/>
                             <constraint firstItem="fVY-Ki-CwB" firstAttribute="trailing" secondItem="VaT-5b-b6C" secondAttribute="trailing" constant="20" id="bw2-Ck-pWo"/>
                             <constraint firstItem="EGD-Le-bcV" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="f0B-NS-fVg"/>
                             <constraint firstItem="FPH-Ir-X47" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="gCT-Sp-2IR"/>
                             <constraint firstItem="nuI-49-0fi" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="gfa-63-DvV"/>
                             <constraint firstItem="KuO-Ng-Qrc" firstAttribute="width" secondItem="FPH-Ir-X47" secondAttribute="width" id="i7T-Ef-CMA"/>
+                            <constraint firstItem="EQB-6v-fVH" firstAttribute="leading" secondItem="fVY-Ki-CwB" secondAttribute="leading" constant="20" id="lWV-XO-7Jj"/>
                             <constraint firstItem="7ig-kd-38c" firstAttribute="top" secondItem="VaT-5b-b6C" secondAttribute="bottom" constant="8" id="lsw-kF-jZc"/>
                             <constraint firstItem="3Fs-6j-YzS" firstAttribute="top" secondItem="fVY-Ki-CwB" secondAttribute="top" constant="23" id="mcV-Um-QJd"/>
                             <constraint firstItem="fVY-Ki-CwB" firstAttribute="trailing" secondItem="7ig-kd-38c" secondAttribute="trailing" constant="20" id="mps-BH-c2q"/>
@@ -527,13 +567,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fVY-Ki-CwB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="JYy-4g-sZa">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="aWU-8Y-Xq7">
-                            <connections>
-                                <action selector="saveExhibition:" destination="8PK-Gq-9xZ" id="Z0d-7V-NOl"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="JYy-4g-sZa"/>
                     <connections>
                         <outlet property="addImage" destination="KuO-Ng-Qrc" id="d76-cA-u9X"/>
                         <outlet property="addPlants" destination="FPH-Ir-X47" id="eZe-4F-kJl"/>
@@ -542,7 +576,8 @@
                         <outlet property="exhibitName" destination="AM2-8d-Kof" id="ah7-zA-Sde"/>
                         <outlet property="exhibitionImage" destination="EGD-Le-bcV" id="XSN-TQ-Nib"/>
                         <outlet property="locationLabel" destination="7ig-kd-38c" id="usW-bj-Bq9"/>
-                        <outlet property="saveExhibition" destination="aWU-8Y-Xq7" id="fYc-Jk-u62"/>
+                        <outlet property="modifyExhibitionDetailsButton" destination="EQB-6v-fVH" id="cfP-N7-ehh"/>
+                        <segue destination="dh0-UY-r9q" kind="show" identifier="plantViewTable" id="INW-D4-5aW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tyJ-5f-H4R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -552,7 +587,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3181.1594202898555" y="315.40178571428572"/>
+            <point key="canvasLocation" x="3128.985507246377" y="61.607142857142854"/>
         </scene>
         <!--Plant Table View Controller-->
         <scene sceneID="LU8-Kk-8gJ">
@@ -636,8 +671,11 @@
             <point key="canvasLocation" x="4156.521739130435" y="-76.339285714285708"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="qkw-px-lZG"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.043137254899999998" green="0.58039215690000001" blue="0.27450980390000002" alpha="0.84705882349999995" colorSpace="calibratedRGB"/>
     <resources>
-        <image name="first" width="30" height="30"/>
         <image name="sort" width="50" height="50"/>
     </resources>
 </document>

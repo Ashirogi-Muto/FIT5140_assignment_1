@@ -22,6 +22,9 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor : Constants.APP_COLOR_DARK], for: .selected)
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
