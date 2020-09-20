@@ -38,6 +38,9 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func loadSelectedExhibition() {
+        //Fetching the app delegate object
+        //Refered this style of using Core Data from a Medium article
+        //named "Mastering In CoreData"
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -102,7 +105,9 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
             destination.passedExhibitionId = selectedExhibitId
         }
     }
-    
+    ///Refered to a StackOverflow answer to fetch the images from
+    ///FileManager API
+    ///If File Manger does not find the image a default image is returned
     func getExhibitImage(name: String) -> UIImage {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
@@ -110,6 +115,9 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         return UIImage(named: "plant")!
     }
     
+    
+    ///Refered the class material to implement
+    ///loading of images asynchronously
     func loadImagesAsynchronously(){
         for plant in plants {
             let imageUrl = plant.imageUrl

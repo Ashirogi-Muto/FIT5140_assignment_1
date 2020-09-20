@@ -7,9 +7,14 @@
 //
 import UIKit
 import CoreData
-
+/**
+ Create default  exhibtions for the app
+ */
 class InitializeExhibits {
     func creatDefaulteExhibits(){
+        //Fetching the app delegate object
+        //Refered this style of using Core Data from a Medium article
+        //named "Mastering In CoreData"
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -110,40 +115,40 @@ class InitializeExhibits {
         let exhibitionOne = Exhibition(context: managedObjectContext)
         exhibitionOne.exhibitionDescription = "Exhibition One"
         exhibitionOne.id = UUID()
-        exhibitionOne.lat = -37.830043
-        exhibitionOne.lon = 144.979198
+        exhibitionOne.lat = -37.83026972238079
+        exhibitionOne.lon = 144.9812958604805
         exhibitionOne.name = "Exhibition One"
         exhibitionOne.plants = NSSet.init(array: [plantOne, plantTwo])
         
         let exhibitionTwo = Exhibition(context: managedObjectContext)
         exhibitionTwo.exhibitionDescription = "Exhibition Two"
         exhibitionTwo.id = UUID()
-        exhibitionTwo.lat = -37.830130
-        exhibitionTwo.lon = 144.979474
+        exhibitionTwo.lat = -37.830434897948926
+        exhibitionTwo.lon = 144.98160575012548
         exhibitionTwo.name = "Exhibition Two"
         exhibitionTwo.plants = NSSet.init(array: [plantThree, plantFour])
         
         let exhibitionThree = Exhibition(context: managedObjectContext)
         exhibitionThree.exhibitionDescription = "Exhibition Three"
         exhibitionThree.id = UUID()
-        exhibitionThree.lat = -37.830231
-        exhibitionThree.lon = 144.979269
+        exhibitionThree.lat = -37.8303868469452
+        exhibitionThree.lon = 144.98095174988987
         exhibitionThree.name = "Exhibition Three"
         exhibitionThree.plants = NSSet.init(array: [plantFive, plantSix])
         
         let exhibitionFour = Exhibition(context: managedObjectContext)
         exhibitionFour.exhibitionDescription = "Exhibition Four"
         exhibitionFour.id = UUID()
-        exhibitionFour.lat = -37.830342
-        exhibitionFour.lon = 144.979845
+        exhibitionFour.lat = -37.83088687664818
+        exhibitionFour.lon = 144.98128635463326
         exhibitionFour.name = "Exhibition Four"
         exhibitionFour.plants = NSSet.init(array: [plantSeven, plantEight])
         
         let exhibitionFive = Exhibition(context: managedObjectContext)
         exhibitionFive.exhibitionDescription = "Exhibition Five"
         exhibitionFive.id = UUID()
-        exhibitionFive.lat = -37.830471
-        exhibitionFive.lon = 144.979659
+        exhibitionFive.lat = -37.83075774014967
+        exhibitionFive.lon = 144.9807026974235
         exhibitionFive.name = "Exhibition Five"
         exhibitionFive.plants = NSSet.init(array: [plantNine, plantTen])
         

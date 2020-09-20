@@ -10,6 +10,9 @@ import UIKit
 import CoreData
 import MapKit
 
+
+///Protocol to send the name of exhibtion
+///when that exhibition is deleted
 protocol ExhibitionDeleted {
     func removeGeofence(name: String)
 }
@@ -24,6 +27,7 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ///App theme related setup
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor : Constants.APP_COLOR_DARK], for: .selected)
@@ -111,6 +115,8 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         return cell
     }
     
+    
+    ///Delete exhibition
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate

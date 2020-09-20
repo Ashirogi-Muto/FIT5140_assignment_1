@@ -15,6 +15,10 @@ protocol NewExhibtionCreated {
     func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String)
 }
 
+protocol ExhibtionUpdated {
+    func initializeGeofencingForUpdatedExhibition(updatedExhibition: Exhibition)
+}
+
 class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DidSelectPlants, UITextFieldDelegate {
     
     @IBOutlet weak var exhibitName: UITextField!
@@ -30,8 +34,9 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     var plantsToBeSaved: [Plant] = []
     var selectedPlants: [PlantModel] = []
     var delegate: NewExhibtionCreated?
+    var updateExhibitionDelegate: ExhibtionUpdated?
     var passedExhibitionIdDataObject: NSManagedObject!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         exhibitName.delegate = self
@@ -40,6 +45,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         addImage.layer.cornerRadius = 5
         let homeScreenView = HomeScreenController()
         delegate = homeScreenView
+        updateExhibitionDelegate = homeScreenView
         let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         exhibitLocation.delegate = self
         exhibitLocation.setRegion(initialRegion)
@@ -56,29 +62,57 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         }
     }
     
-    func loadPassedExhibitionIdDataAndSetTextFields() {
+    func getManagedobjectContext() -> NSManagedObjectContext? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
-                return
+                return nil
         }
         let managedObjectContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", "id", passedExhibitionId! as CVarArg)
-        do {
-            let exhbition = try managedObjectContext.fetch(fetchRequest)
-            if exhbition.count > 0 {
-                let exhibit = exhbition.first
-                let plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
-                exhibitName.text = exhibit?.name
-                exhibitDescription.text = exhibit?.exhibitionDescription
-                exhibitionImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
-                typeCastPlantDataToModeForm(plantArray: plants)
+        return managedObjectContext
+    }
+    
+    func returnExhibitionContextManagedObject() throws -> [Exhibition]? {
+        let managedObjectContext = getManagedobjectContext()
+        if managedObjectContext != nil {
+            let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", "id", passedExhibitionId! as CVarArg)
+            let exhbition = try managedObjectContext!.fetch(fetchRequest)
+            return exhbition
+        }
+        else {
+            return nil
+        }
+    }
+    
+    
+    func loadPassedExhibitionIdDataAndSetTextFields() {
+        let managedObjectContext = getManagedobjectContext()
+        if managedObjectContext != nil {
+            do {
+                let exhbition = try returnExhibitionContextManagedObject()
+                if exhbition!.count > 0 {
+                    let exhibit = exhbition?.first
+                    let plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
+                    exhibitName.text = exhibit?.name
+                    exhibitDescription.text = exhibit?.exhibitionDescription
+                    exhibitionImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
+                    typeCastPlantDataToModeForm(plantArray: plants)
+                    let allPreviousAnnotations = exhibitLocation.annotations
+                    exhibitLocation.removeAnnotations(allPreviousAnnotations)
+                    let coordinates = CLLocationCoordinate2D(latitude: exhibit!.lat, longitude: exhibit!.lon)
+                    exhibitLocation.setRegion(coordinates)
+                    let currentExhibitAnnotation = ExhibitAnnotation(coordinate: coordinates, title: (exhibit?.name)!, subtitle: "", id: UUID(), image: "plant")
+                    exhibitLocation.addAnnotation(currentExhibitAnnotation)
+                }
+            } catch let error as NSError {
+                showAlert(title: "Oops!", message: "Could not load the exhibition", actionTitle: "Ok!")
+                modifyExhibitionDetailsButton.isEnabled = false
+                print("Error in deleting exhibits \(error.userInfo)")
             }
-
-        } catch let error as NSError {
-            showAlert(title: "Oop!", message: "Could not load the exhibition", actionTitle: "Ok!")
+        }
+        else {
+            showAlert(title: "Oops!", message: "Could not load the exhibition", actionTitle: "Ok!")
             modifyExhibitionDetailsButton.isEnabled = false
-            print("Error in deleting exhibits \(error.userInfo)")
         }
     }
     
@@ -121,7 +155,7 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     
     func presentSaveExhibitionErrorAlert() {
         let alertController = UIAlertController(title: "Error", message: "Could not save the exhibition!", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: .destructive, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
@@ -140,53 +174,106 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
     func saveExhibition() {
         let isFormValid = isExhibitionFormValid()
         if isFormValid == true {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            let managedObjectContext = getManagedobjectContext()
+            if managedObjectContext != nil {
+                let exhibitionId = UUID()
+                let exhibitionToBeSaved = Exhibition(context: managedObjectContext!)
+                exhibitionToBeSaved.id = exhibitionId
+                exhibitionToBeSaved.name = exhibitName.text
+                exhibitionToBeSaved.exhibitionDescription = exhibitDescription.text
+                let annotation = exhibitLocation.annotations.first
+                exhibitionToBeSaved.lat = NSNumber(value: (annotation?.coordinate.latitude)!) as! Double
+                exhibitionToBeSaved.lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
+                setImagesToBeSaved()
+                print("Saving \(plantsToBeSaved.count) plants")
+                exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
+                let imageName = "\(exhibitionId.uuidString).png"
+                exhibitionToBeSaved.image = imageName
+                
+                let hasImageBeenSaved = saveImageOfExhibition(image: exhibitionImage.image!, name: imageName)
+                if hasImageBeenSaved == true {
+                    do{
+                        try managedObjectContext?.save()
+                        delegate?.initializeGeofencingForNewExhibition(coordinates: annotation!.coordinate, name: exhibitionToBeSaved.name!)
+                        navigationController?.popViewController(animated: true)
+                    } catch let error as NSError{
+                        print("Could not save \(error), \(error.userInfo)")
+                        presentSaveExhibitionErrorAlert()
+                    }
+                }
                 else {
-                    return
-            }
-            let managedObjectContext = appDelegate.persistentContainer.viewContext
-            for plant in selectedPlants {
-                let plantToBeSaved = Plant(context: managedObjectContext)
-                plantToBeSaved.family = plant.family
-                plantToBeSaved.name = plant.name
-                plantToBeSaved.imageUrl = plant.imageUrl
-                plantToBeSaved.plantDescription = plant.plantDescription
-                plantToBeSaved.yearDiscovered = plant.yearDiscovered
-                plantToBeSaved.id = plant.id ?? UUID()
-                plantsToBeSaved.append(plantToBeSaved)
-            }
-            let exhibitionId = UUID()
-            
-            let exhibitionToBeSaved = Exhibition(context: managedObjectContext)
-            exhibitionToBeSaved.id = exhibitionId
-            exhibitionToBeSaved.name = exhibitName.text
-            exhibitionToBeSaved.exhibitionDescription = exhibitDescription.text
-            let annotation = exhibitLocation.annotations.first
-            exhibitionToBeSaved.lat = NSNumber(value: (annotation?.coordinate.latitude)!) as! Double
-            exhibitionToBeSaved.lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
-            exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
-            let imageName = "\(exhibitionId.uuidString).png"
-            exhibitionToBeSaved.image = imageName
-            
-            let hasImageBeenSaved = saveImageOfExhibition(image: exhibitionImage.image!, name: imageName)
-            if hasImageBeenSaved == true {
-                do{
-                    try managedObjectContext.save()
-                    delegate?.initializeGeofencingForNewExhibition(coordinates: annotation!.coordinate, name: exhibitionToBeSaved.name!)
-                    navigationController?.popViewController(animated: true)
-                } catch let error as NSError{
-                    print("Could not save \(error), \(error.userInfo)")
                     presentSaveExhibitionErrorAlert()
                 }
-            }
-            else {
-                presentSaveExhibitionErrorAlert()
             }
         }
     }
     
     func updateExhibition() {
         let isFormValid = isExhibitionFormValid()
+        if isFormValid == true {
+            let managedObjectContext = getManagedobjectContext()
+            if managedObjectContext != nil {
+                let fetchRequest = NSFetchRequest<Exhibition>(entityName: "Exhibition")
+                fetchRequest.predicate = NSPredicate(format: "%K == %@", "id", passedExhibitionId! as CVarArg)
+                do {
+                    let exhbition = try managedObjectContext!.fetch(fetchRequest)
+                    if exhbition.count > 0 {
+                        let exhibit = exhbition.first
+                        exhibit?.setValue(exhibitName.text, forKey: "name")
+                        exhibit?.setValue(exhibitDescription.text, forKey: "exhibitionDescription")
+                        let annotation = exhibitLocation.annotations.first
+                        let lat = NSNumber(value: (annotation?.coordinate.latitude)!) as! Double
+                        let lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
+                        exhibit?.setValue(lat, forKey: "lat")
+                        exhibit?.setValue(lon, forKey: "lon")
+                        setImagesToBeSaved()
+                        print("Saving \(plantsToBeSaved.count) plants")
+                        exhibit?.addToPlants(NSSet.init(array: plantsToBeSaved))
+                        let imageName = "\(passedExhibitionId!.uuidString).png"
+                        exhibit?.setValue(imageName, forKey: "image")
+                        let hasImageBeenSaved = saveImageOfExhibition(image: exhibitionImage.image!, name: imageName)
+                        if hasImageBeenSaved == true {
+                            do{
+                                try managedObjectContext!.save()
+                                updateExhibitionDelegate?.initializeGeofencingForUpdatedExhibition(updatedExhibition: exhibit!)
+                                view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+                            } catch let error as NSError{
+                                print("Could not save \(error), \(error.userInfo)")
+                                presentSaveExhibitionErrorAlert()
+                            }
+                        }
+                        else {
+                            presentSaveExhibitionErrorAlert()
+                        }
+                    }
+                    
+                } catch let error as NSError {
+                    presentSaveExhibitionErrorAlert()
+                    print("Error in updating exhibit \(error.userInfo)")
+                }
+                
+            }
+            else {
+                showAlert(title: "Oops!", message: "Could not load the exhibition", actionTitle: "Ok!")
+                modifyExhibitionDetailsButton.isEnabled = false
+            }
+        }
+    }
+    
+    func setImagesToBeSaved() {
+        let managedObjectContext = getManagedobjectContext()
+        if managedObjectContext != nil {
+            for plant in selectedPlants {
+                let newPlantItem = Plant(context: managedObjectContext!)
+                newPlantItem.family = plant.family
+                newPlantItem.name = plant.name
+                newPlantItem.imageUrl = plant.imageUrl
+                newPlantItem.plantDescription = plant.plantDescription
+                newPlantItem.yearDiscovered = plant.yearDiscovered
+                newPlantItem.id = plant.id ?? UUID()
+                plantsToBeSaved.append(newPlantItem)
+            }
+        }
     }
     
     func isExhibitionFormValid() -> Bool {
@@ -255,17 +342,13 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         }
         addPlants.backgroundColor = Constants.APP_COLOR_DARK
         addImage.backgroundColor = Constants.APP_COLOR_DARK
-
+        
         exhibitName.attributedPlaceholder = NSAttributedString(string: "Exhibition Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
         exhibitDescription.attributedPlaceholder = NSAttributedString(string: "Exhibition Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
     }
     
     @IBAction func selectImageForExhibition(_ sender: Any) {
-        let chooseImageFromCameraAction = UIAlertAction(title: "Camera", style: .default) { (action: UIAlertAction) in
-            self.getImage(from: .camera)
-        }
-        
         let chooseImageFromLibraryAction = UIAlertAction(title: "Library", style: .default) { (action: UIAlertAction) in
             self.getImage(from: .photoLibrary)
         }
@@ -273,7 +356,6 @@ class AddExhibitionViewController: UIViewController, MKMapViewDelegate, UIImageP
         let cancelImageSelectionAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
         
         let alertController = UIAlertController(title: "Select Image", message: "Choose Location", preferredStyle: .actionSheet)
-        alertController.addAction(chooseImageFromCameraAction)
         alertController.addAction(chooseImageFromLibraryAction)
         alertController.addAction(cancelImageSelectionAction)
         present(alertController, animated: true, completion: nil)

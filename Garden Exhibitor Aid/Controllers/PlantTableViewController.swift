@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 
+///Protocol
 protocol DidSelectPlants {
     func passSelectedPlants(plants: [PlantModel])
 }
@@ -34,6 +35,10 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
         indicator.hidesWhenStopped = true
         indicator.backgroundColor = UIColor.clear
         view.addSubview(indicator)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        delegate?.passSelectedPlants(plants: self.selectedPlants)
     }
     
     // MARK: - Table view data source
@@ -104,11 +109,13 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alert, animated: true)
         }
-        delegate?.passSelectedPlants(plants: self.selectedPlants)
         navigationController?.popViewController(animated: true)
     }
     
     func loadAllPlants(){
+        //Fetching the app delegate object
+        //Refered this style of using Core Data from a Medium article
+        //named "Mastering In CoreData"
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
                 return
@@ -206,7 +213,6 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
                 DispatchQueue.main.async {
                     let image = UIImage(data: data!)
                     self.images.append(image!)
-                    //                    print("images -> \(self.images.count) all -> \(self.filteredPlants.count)")
                 }
             }
             task.resume()
