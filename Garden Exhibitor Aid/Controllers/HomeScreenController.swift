@@ -34,6 +34,7 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.distanceFilter = 20
+        homeScreenMap.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,8 +56,6 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
     /// then adds the remaining annotations
     func setupHomeScreenMap() {
         loadAllExhibitionsForMap()
-        homeScreenMap.delegate = self
-        
         let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         homeScreenMap.centerLocation(initialRegion)
         reinitializeMapAnnotations()

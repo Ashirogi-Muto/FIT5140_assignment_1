@@ -65,7 +65,7 @@ class InitializeExhibits {
         exhibitionOne.lat = -37.83026972238079
         exhibitionOne.lon = 144.9812958604805
         exhibitionOne.name = "Exhibition One"
-        exhibitionOne.plants = NSSet.init(array: [fetchedPlants[0], fetchedPlants[1]])
+        exhibitionOne.plants = Set([fetchedPlants[0], fetchedPlants[1], fetchedPlants[2]])
         
         let exhibitionTwo = Exhibition(context: managedObjectContext!)
         exhibitionTwo.exhibitionDescription = "Exhibition Two"
@@ -73,7 +73,7 @@ class InitializeExhibits {
         exhibitionTwo.lat = -37.830434897948926
         exhibitionTwo.lon = 144.98160575012548
         exhibitionTwo.name = "Exhibition Two"
-        exhibitionTwo.plants = NSSet.init(array: [fetchedPlants[2], fetchedPlants[3]])
+        exhibitionTwo.plants = Set([fetchedPlants[3], fetchedPlants[4], fetchedPlants[5]])
         
         let exhibitionThree = Exhibition(context: managedObjectContext!)
         exhibitionThree.exhibitionDescription = "Exhibition Three"
@@ -81,15 +81,15 @@ class InitializeExhibits {
         exhibitionThree.lat = -37.8303868469452
         exhibitionThree.lon = 144.98095174988987
         exhibitionThree.name = "Exhibition Three"
-        exhibitionThree.plants = NSSet.init(array: [fetchedPlants[4], fetchedPlants[5]])
-        
+        exhibitionThree.plants = Set([fetchedPlants[6], fetchedPlants[7], fetchedPlants[8]])
+
         let exhibitionFour = Exhibition(context: managedObjectContext!)
         exhibitionFour.exhibitionDescription = "Exhibition Four"
         exhibitionFour.id = UUID()
         exhibitionFour.lat = -37.83088687664818
         exhibitionFour.lon = 144.98128635463326
         exhibitionFour.name = "Exhibition Four"
-        exhibitionFour.plants = NSSet.init(array: [fetchedPlants[6], fetchedPlants[7]])
+        exhibitionFour.plants = Set([fetchedPlants[9], fetchedPlants[10], fetchedPlants[11]])
         
         let exhibitionFive = Exhibition(context: managedObjectContext!)
         exhibitionFive.exhibitionDescription = "Exhibition Five"
@@ -97,7 +97,7 @@ class InitializeExhibits {
         exhibitionFive.lat = -37.83075774014967
         exhibitionFive.lon = 144.9807026974235
         exhibitionFive.name = "Exhibition Five"
-        exhibitionFive.plants = NSSet.init(array: [fetchedPlants[8], fetchedPlants[9]])
+        exhibitionFive.plants = Set([fetchedPlants[12], fetchedPlants[13], fetchedPlants[14]])
         
         let exhibitionSix = Exhibition(context: managedObjectContext!)
         exhibitionSix.exhibitionDescription = "Exhibition Six"
@@ -105,7 +105,7 @@ class InitializeExhibits {
         exhibitionSix.lat = -37.830538038716156
         exhibitionSix.lon = 144.98158465914935
         exhibitionSix.name = "Exhibition Six"
-        exhibitionSix.plants = NSSet.init(array: [fetchedPlants[10], fetchedPlants[11]])
+        exhibitionSix.plants = Set([fetchedPlants[15], fetchedPlants[16], fetchedPlants[17]])
         
         let exhibitionSeven = Exhibition(context: managedObjectContext!)
         exhibitionSeven.exhibitionDescription = "Exhibition Seven"
@@ -113,7 +113,7 @@ class InitializeExhibits {
         exhibitionSeven.lat = -37.83080902877808
         exhibitionSeven.lon = 144.98277437171112
         exhibitionSeven.name = "Exhibition Seven"
-        exhibitionSeven.plants = NSSet.init(array: [fetchedPlants[12], fetchedPlants[13]])
+        exhibitionSeven.plants = Set([fetchedPlants[18], fetchedPlants[19], fetchedPlants[1]])
         
         let exhibitionEight = Exhibition(context: managedObjectContext!)
         exhibitionEight.exhibitionDescription = "Exhibition Eight"
@@ -121,7 +121,7 @@ class InitializeExhibits {
         exhibitionEight.lat = -37.83084070287619
         exhibitionEight.lon = 144.98053307800853
         exhibitionEight.name = "Exhibition Eight"
-        exhibitionEight.plants = NSSet.init(array: [fetchedPlants[14], fetchedPlants[15]])
+        exhibitionEight.plants = Set([fetchedPlants[2], fetchedPlants[3], fetchedPlants[4]])
         
         let exhibitionNine = Exhibition(context: managedObjectContext!)
         exhibitionNine.exhibitionDescription = "Exhibition Nine"
@@ -129,7 +129,7 @@ class InitializeExhibits {
         exhibitionNine.lat = -37.83029520262037
         exhibitionNine.lon = 144.9808048849983
         exhibitionNine.name = "Exhibition Nine"
-        exhibitionNine.plants = NSSet.init(array: [fetchedPlants[16], fetchedPlants[17]])
+        exhibitionNine.plants = Set([fetchedPlants[5], fetchedPlants[6], fetchedPlants[7]])
         
         let exhibitionTen = Exhibition(context: managedObjectContext!)
         exhibitionTen.exhibitionDescription = "Exhibition Ten"
@@ -137,7 +137,7 @@ class InitializeExhibits {
         exhibitionTen.lat = -37.830823106156686
         exhibitionTen.lon = 144.98035484391693
         exhibitionTen.name = "Exhibition Ten"
-        exhibitionTen.plants = NSSet.init(array: [fetchedPlants[18], fetchedPlants[19]])
+        exhibitionTen.plants = Set([fetchedPlants[8], fetchedPlants[9], fetchedPlants[10]])
         do{
             try managedObjectContext!.save()
             print("Data Created")

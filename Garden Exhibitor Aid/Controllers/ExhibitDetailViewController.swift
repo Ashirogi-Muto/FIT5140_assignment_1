@@ -61,7 +61,8 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
             let exhbition = try managedObjectContext.fetch(fetchRequest)
             if exhbition.count > 0 {
                 exhibit = exhbition.first
-                plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
+                plants = Array((exhibit?.plants)!) as [Plant]
+                print(plants.count)
                 let id = exhibit?.id!
                 let name = exhibit?.name!
                 let exhibitionDescription = exhibit?.exhibitionDescription!

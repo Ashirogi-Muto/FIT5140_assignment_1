@@ -23,7 +23,7 @@ extension Exhibition {
     @NSManaged public var lon: Double
     @NSManaged public var name: String?
     @NSManaged public var image: String?
-    @NSManaged public var plants: NSSet?
+    @NSManaged public var plants: Set<Plant>?
 
 }
 

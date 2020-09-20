@@ -115,7 +115,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                 let exhbition = try returnExhibitionContextManagedObject()
                 if exhbition!.count > 0 {
                     let exhibit = exhbition?.first
-                    let plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
+                    let plants = exhibit?.plants! as! [Plant]
                     exhibitName.text = exhibit?.name
                     exhibitDescription.text = exhibit?.exhibitionDescription
                     exhibitionImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
@@ -213,7 +213,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                 exhibitionToBeSaved.lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
                 setPlantsToBeSaved()
                 print("Saving \(plantsToBeSaved.count) plants")
-                exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
+                exhibitionToBeSaved.plants = (NSSet.init(array: plantsToBeSaved) as! Set<Plant>)
                 let imageName = "\(exhibitionId.uuidString).png"
                 exhibitionToBeSaved.image = imageName
                 
