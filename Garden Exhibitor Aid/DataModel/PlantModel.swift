@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+//convert the plant search data type to this model
 struct PlantModel {
     let name: String?
     let plantDescription: String?

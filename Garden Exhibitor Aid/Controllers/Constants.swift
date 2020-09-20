@@ -11,6 +11,7 @@ import UIKit
 struct Constants {
     static var APP_COLOR_LIGHT: UIColor { return UIColor(red: 141/255, green: 199/255, blue: 63/255, alpha: 1.0) }
     static var APP_COLOR_DARK: UIColor { return UIColor(red: 11/255, green: 148/255, blue: 70/255, alpha: 1.0) }
+    static var PLANT_SELECTION_COLOR: UIColor { return UIColor(red: 125/255, green: 172/255, blue: 59/255, alpha: 1.0) }
     static let DEFAULT_MAP_LAT = -37.830531
     static let DEFAULT_MAP_LON = 144.981197
     static let DEFAULT_ANNOTATION_NAME = "Royal Melbourne Botanicle Garden"

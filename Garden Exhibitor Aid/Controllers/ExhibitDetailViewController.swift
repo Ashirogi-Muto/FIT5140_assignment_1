@@ -8,7 +8,12 @@
 
 import UIKit
 import CoreData
+import MapKit
 
+//  This controller shows the details of a plant lets the user edit those details
+//  Initially the border of text field is removed and the text fields are disabled
+//  When the user eants to edit the plant details the borders are added for text field
+//  and editing is enabled for the text fields
 class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlantWasUpdated {
     var selectedExhibitId: UUID? = nil
     var commitPredicate: NSPredicate?
@@ -20,6 +25,9 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var exhibitDescription: UILabel!
     @IBOutlet weak var exhibitName: UILabel!
     @IBOutlet weak var plantList: UITableView!
+    
+    @IBOutlet weak var exhibitionLocation: MKMapView!
+    
     var selectedPlant: Plant?
     
     override func viewDidLoad() {
@@ -54,9 +62,22 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
             if exhbition.count > 0 {
                 exhibit = exhbition.first
                 plants = (exhibit?.plants!.allObjects ?? []) as [Plant]
-                exhibitName.text = exhibit?.name
-                exhibitDescription.text = exhibit?.exhibitionDescription
-                exhibitImage.image = getExhibitImage(name: exhibit?.image ?? "no name")
+                let id = exhibit?.id!
+                let name = exhibit?.name!
+                let exhibitionDescription = exhibit?.exhibitionDescription!
+                let image = exhibit?.image ?? "no name"
+                exhibitName.text = name
+                exhibitDescription.text = exhibitionDescription
+                exhibitImage.image = getExhibitImage(name: image)
+                let lat = exhibit?.lat
+                let lon = exhibit?.lon
+                let coordinates = CLLocationCoordinate2D(latitude: lat!, longitude: lon!)
+                exhibitionLocation.setRegion(coordinates)
+                let defaultAnnotation = ExhibitAnnotation(coordinate: coordinates, title: name!, subtitle: exhibitionDescription!, id: id!, image: image)
+                exhibitionLocation.addAnnotation(defaultAnnotation)
+                exhibitionLocation.isZoomEnabled = false
+                exhibitionLocation.isScrollEnabled = false
+                exhibitionLocation.isUserInteractionEnabled = false
                 loadImagesAsynchronously()
                 plantList.reloadData()
             }
@@ -101,7 +122,7 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
         if segue.identifier == Constants.EDIT_EXHIBITION_SEGUE_IDENTIFIER {
-            let destination = segue.destination as! AddExhibitionViewController
+            let destination = segue.destination as! AddAndUpdateExhibitionViewController
             destination.passedExhibitionId = selectedExhibitId
         }
     }
@@ -143,5 +164,4 @@ class ExhibitDetailViewController: UIViewController, UITableViewDelegate, UITabl
     @IBAction func loadEditExhibitionView(_ sender: Any) {
         performSegue(withIdentifier: Constants.EDIT_EXHIBITION_SEGUE_IDENTIFIER, sender: self)
     }
-    
 }

@@ -37,6 +37,7 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
         //If not then create default exhibitions
         let defaults = UserDefaults.standard
         let haveExhibitsInitialised = defaults.bool(forKey: "exhibitInit")
+        print("haveExhibitsInitialised \(haveExhibitsInitialised)")
         if haveExhibitsInitialised != true {
             let initExhibit = InitializeExhibits()
             initExhibit.creatDefaulteExhibits()
@@ -69,6 +70,7 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
             for exhibit in exhibitAnnotations {
                 let id = exhibit.id
                 if id == selectedAnnotationFromExhibitList {
+                    homeScreenMap.centerCoordinate = exhibit.coordinate
                     homeScreenMap.selectAnnotation(exhibit, animated: true)
                 }
             }
@@ -152,6 +154,9 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
         return view
     }
     
+    ///Refered to a StackOverflow answer to fetch the images from
+    ///FileManager API
+    ///If File Manger does not find the image a default image is returned
     func getExhibitImageForAnnotation(name: String) -> UIImage {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!
@@ -178,13 +183,17 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
     
     ///This is a delegate function which creates a new geo fencing region
     ///for a newly created exhibition
-    func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String) {
-        initiateGeofencing(coordinates: coordinates, name: name)
+    func newExhibitionAdded(newExhibition: Exhibition) {
+        let lat = newExhibition.lat
+        let lon = newExhibition.lon
+        let name = newExhibition.name
+        let coordinates = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        initiateGeofencing(coordinates: coordinates, name: name!)
     }
     
     ///This is a delegate function which updates the geo fencing region
     ///for an updated  exhibition
-    func initializeGeofencingForUpdatedExhibition(updatedExhibition: Exhibition) {
+    func exhibitionIsUpdated(updatedExhibition: Exhibition) {
         let updatedName = updatedExhibition.name!
         removeGeofence(name: updatedName)
         let lat = updatedExhibition.lat

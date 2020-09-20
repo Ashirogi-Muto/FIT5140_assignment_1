@@ -152,6 +152,46 @@ class InitializeExhibits {
         exhibitionFive.name = "Exhibition Five"
         exhibitionFive.plants = NSSet.init(array: [plantNine, plantTen])
         
+        let exhibitionSix = Exhibition(context: managedObjectContext)
+        exhibitionSix.exhibitionDescription = "Exhibition Six"
+        exhibitionSix.id = UUID()
+        exhibitionSix.lat = -37.830538038716156
+        exhibitionSix.lon = 144.98158465914935
+        exhibitionSix.name = "Exhibition Six"
+        exhibitionSix.plants = NSSet.init(array: [plantOne, plantTen])
+        
+        let exhibitionSeven = Exhibition(context: managedObjectContext)
+        exhibitionSeven.exhibitionDescription = "Exhibition Seven"
+        exhibitionSeven.id = UUID()
+        exhibitionSeven.lat = -37.83080902877808
+        exhibitionSeven.lon = 144.98277437171112
+        exhibitionSeven.name = "Exhibition Seven"
+        exhibitionSeven.plants = NSSet.init(array: [plantSix, plantFive])
+        
+        let exhibitionEight = Exhibition(context: managedObjectContext)
+        exhibitionEight.exhibitionDescription = "Exhibition Eight"
+        exhibitionEight.id = UUID()
+        exhibitionEight.lat = -37.83084070287619
+        exhibitionEight.lon = 144.98053307800853
+        exhibitionEight.name = "Exhibition Eight"
+        exhibitionEight.plants = NSSet.init(array: [plantNine, plantEight])
+        
+        let exhibitionNine = Exhibition(context: managedObjectContext)
+        exhibitionNine.exhibitionDescription = "Exhibition Nine"
+        exhibitionNine.id = UUID()
+        exhibitionNine.lat = -37.83029520262037
+        exhibitionNine.lon = 144.9808048849983
+        exhibitionNine.name = "Exhibition Nine"
+        exhibitionNine.plants = NSSet.init(array: [plantSeven, plantFour])
+        
+        let exhibitionTen = Exhibition(context: managedObjectContext)
+        exhibitionTen.exhibitionDescription = "Exhibition Ten"
+        exhibitionTen.id = UUID()
+        exhibitionTen.lat = -37.830823106156686
+        exhibitionTen.lon = 144.98035484391693
+        exhibitionTen.name = "Exhibition Ten"
+        exhibitionTen.plants = NSSet.init(array: [plantEight, plantFive])
+        
         
         do{
             try managedObjectContext.save()

@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+//Protocol to notify other controllers with plant details
+//that a plant was updated
 protocol PlantWasUpdated {
     func refreshPlantList()
 }
@@ -23,23 +25,31 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
     var delegate: PlantWasUpdated?
     var imageUrl: String?
     var plantId: UUID?
+    
+    //Initial mode is toggle
+    //When the user clicks on the button
+    //the mode is changed to "sve"
     var defaultMode: String = "edit"
+
     @IBOutlet weak var editAndSaveButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        plantName.borderStyle = .none
-        plantFamily.borderStyle = .none
-        yearDiscovered.borderStyle = .none
-        plantScientificName.borderStyle = .none
-        
         plantName.delegate = self
         plantFamily.delegate = self
         yearDiscovered.delegate = self
         plantScientificName.delegate = self
-        
         editAndSaveButton.layer.cornerRadius = 5
+
+        removeTextFieldBorders()
         loadPlant()
+    }
+    
+    func removeTextFieldBorders() {
+        plantName.borderStyle = .none
+        plantFamily.borderStyle = .none
+        yearDiscovered.borderStyle = .none
+        plantScientificName.borderStyle = .none
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +79,9 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    //This func adds the borders for the tex fields
+    //And makes them editable
     func makeTextFieldsEditable(){
         plantName.borderStyle = .roundedRect
         plantFamily.borderStyle = .roundedRect
@@ -115,6 +128,8 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    //Validate the form
     func areEnteredPlantDetailsValid() -> Bool {
         var isValid = true
         if plantName.text?.count == 0 {
@@ -136,7 +151,7 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
             if let bg = plantScientificName?.subviews.first {
                 bg.backgroundColor = .red
             }
-            plantScientificName.attributedPlaceholder = NSAttributedString(string: "Enter a valid scientifinc name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+            plantScientificName.attributedPlaceholder = NSAttributedString(string: "Enter a valid scientific name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         }
         if yearDiscovered.text?.count == 0 {
             isValid = false
@@ -167,11 +182,16 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         }
         plantName.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
+        plantName.attributedPlaceholder = NSAttributedString(string: "Plant Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
+        
+        
         if let bg = plantScientificName?.subviews.first {
             bg.backgroundColor = .none
         }
         
         plantScientificName.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
+        
+        plantScientificName.attributedPlaceholder = NSAttributedString(string: "Plant Scientific Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
         if let bg = plantFamily?.subviews.first {
             bg.backgroundColor = .none
@@ -179,11 +199,15 @@ class EditPlantViewController: UIViewController, UITextFieldDelegate {
         
         plantFamily.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
         
+        plantFamily.attributedPlaceholder = NSAttributedString(string: "Plant Family", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
+        
         if let bg = yearDiscovered?.subviews.first {
             bg.backgroundColor = .none
         }
         
         yearDiscovered.attributedPlaceholder = NSAttributedString(string: "", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
+        
+        yearDiscovered.attributedPlaceholder = NSAttributedString(string: "Year Discovered", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
     }
     
     func fetchPlant() -> Plant? {

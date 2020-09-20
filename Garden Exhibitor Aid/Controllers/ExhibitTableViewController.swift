@@ -144,6 +144,9 @@ class ExhibitTableViewController: UITableViewController, UISearchResultsUpdating
         }
     }
     
+    ///Refered to a StackOverflow answer to fetch the images from
+    ///FileManager API
+    ///If File Manger does not find the image a default image is returned
     func getExhibitImage(name: String) -> UIImage {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!

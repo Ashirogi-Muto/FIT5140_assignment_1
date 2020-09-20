@@ -9,7 +9,8 @@
 import UIKit
 import CoreData
 
-///Protocol
+///Protocol to send the selected plants back to any other view controller
+///wanting the selected plants
 protocol DidSelectPlants {
     func passSelectedPlants(plants: [PlantModel])
 }
@@ -71,7 +72,10 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
         else {
             cell.plantImage.image = UIImage(named: "plant")
         }
-        
+        //Add a custom selection color for plant selection
+        let customSelectionColor = UIView()
+        customSelectionColor.backgroundColor = Constants.PLANT_SELECTION_COLOR
+        cell.selectedBackgroundView = customSelectionColor
         return cell
     }
     
@@ -79,15 +83,15 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
         guard let searchText = searchBar.text, searchText.count > 0 else {
             return
         }
+        let searchTextLowercased = searchText.lowercased()
         searchBar.resignFirstResponder()
         view.endEditing(true)
         indicator.startAnimating()
         filteredPlants = filteredPlants.filter({ (plant: PlantModel) -> Bool in
-            return (plant.name?.lowercased().contains(searchText.lowercased()) ?? false)
+            return (plant.name?.lowercased().contains(searchTextLowercased) ?? false)
         })
-        performSearchPlantApiCall(searchText: searchText)
+        performSearchPlantApiCall(searchText: searchTextLowercased)
         tableView.reloadData()
-        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

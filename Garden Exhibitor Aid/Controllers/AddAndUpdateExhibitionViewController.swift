@@ -14,13 +14,13 @@ import MapKit
 import Foundation
 import CoreData
 
-//
+//Prtocol to notify other constollers when a new exhibition is added
 protocol NewExhibtionCreated {
-    func initializeGeofencingForNewExhibition(coordinates: CLLocationCoordinate2D, name: String)
+    func newExhibitionAdded(newExhibition: Exhibition)
 }
-
+//Prtocol to notify other constollers when an exhibition is updated
 protocol ExhibtionUpdated {
-    func initializeGeofencingForUpdatedExhibition(updatedExhibition: Exhibition)
+    func exhibitionIsUpdated(updatedExhibition: Exhibition)
 }
 
 class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, DidSelectPlants, UITextFieldDelegate {
@@ -34,11 +34,22 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var modifyExhibitionDetailsButton: UIButton!
     var indicator = UIActivityIndicatorView()
+    //This is variable which decided the context for this contorller
     var passedExhibitionId: UUID? = nil
+    //If this variable is nil when this controller loads
+    //then the controller works for adding a new exhibition
+    //If the variable is not nil
+    //then the controller works for updating the exhibition
+    //with id passed in the variable
+    
+
     var plantsToBeSaved: [Plant] = []
     var selectedPlants: [PlantModel] = []
     var delegate: NewExhibtionCreated?
     var updateExhibitionDelegate: ExhibtionUpdated?
+    //This is the variable that stores the exhibition
+    //to be updated if the controller loads in
+    //update mode
     var passedExhibitionIdDataObject: NSManagedObject!
     
     override func viewDidLoad() {
@@ -50,6 +61,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         let homeScreenView = HomeScreenController()
         delegate = homeScreenView
         updateExhibitionDelegate = homeScreenView
+
         let initialRegion = CLLocationCoordinate2D(latitude: Constants.DEFAULT_MAP_LAT, longitude: Constants.DEFAULT_MAP_LON)
         exhibitLocation.delegate = self
         exhibitLocation.setRegion(initialRegion)
@@ -60,12 +72,16 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         modifyExhibitionDetailsButton.layer.cornerRadius = 5
     }
     override func viewDidAppear(_ animated: Bool) {
+        //Update the button text
         if passedExhibitionId != nil {
             addImage.setTitle("Update Image", for: .normal)
             loadPassedExhibitionIdDataAndSetTextFields()
         }
     }
     
+    
+    //Return the app delegate managed context to be used by
+    //other functions to interact with Core Data objects
     func getManagedobjectContext() -> NSManagedObjectContext? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
             else {
@@ -88,7 +104,10 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         }
     }
     
-    
+    //If the controller loads in update mode
+    //this func fetched the exhibition selected from
+    //the previous screen and sets the form for the
+    //user to update the details of the exhibition
     func loadPassedExhibitionIdDataAndSetTextFields() {
         let managedObjectContext = getManagedobjectContext()
         if managedObjectContext != nil {
@@ -120,6 +139,9 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         }
     }
     
+    
+    //Type cast the Plant type  from NSManagedObject of Core Data to
+    //type of Plant Model
     func typeCastPlantDataToModeForm(plantArray: [Plant]) {
         for plant in plantArray {
             let name = plant.name
@@ -135,13 +157,15 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         addPlants.setTitle("\(selectedPlants.count) plants", for: .normal)
     }
     
+    
+    //Gets the lat long of the selected place from the map
     @IBAction func handleMapTap(_ sender: UITapGestureRecognizer) {
         if sender.state == .ended {
             let locationView = sender.location(in: exhibitLocation)
             let tappedView = exhibitLocation.convert(locationView, toCoordinateFrom: exhibitLocation)
+            let newSelectedCoordinates = CLLocationCoordinate2D(latitude: tappedView.latitude, longitude: tappedView.longitude)
             print(tappedView.latitude)
             print(tappedView.longitude)
-            let newSelectedCoordinates = CLLocationCoordinate2D(latitude: tappedView.latitude, longitude: tappedView.longitude)
             let newSelectedAnnotation = ExhibitAnnotation(coordinate: newSelectedCoordinates, title: exhibitName.text ?? "Name", subtitle: exhibitDescription.text ?? "Description", id: UUID(), image: "plant")
             let allPreviosAnnotation = exhibitLocation.annotations
             exhibitLocation.removeAnnotations(allPreviosAnnotation)
@@ -188,7 +212,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                 let annotation = exhibitLocation.annotations.first
                 exhibitionToBeSaved.lat = NSNumber(value: (annotation?.coordinate.latitude)!) as! Double
                 exhibitionToBeSaved.lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
-                setImagesToBeSaved()
+                setPlantsToBeSaved()
                 print("Saving \(plantsToBeSaved.count) plants")
                 exhibitionToBeSaved.plants = NSSet.init(array: plantsToBeSaved)
                 let imageName = "\(exhibitionId.uuidString).png"
@@ -198,7 +222,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                 if hasImageBeenSaved == true {
                     do{
                         try managedObjectContext?.save()
-                        delegate?.initializeGeofencingForNewExhibition(coordinates: annotation!.coordinate, name: exhibitionToBeSaved.name!)
+                        delegate?.newExhibitionAdded(newExhibition: exhibitionToBeSaved)
                         navigationController?.popViewController(animated: true)
                     } catch let error as NSError{
                         print("Could not save \(error), \(error.userInfo)")
@@ -230,7 +254,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                         let lon = NSNumber(value: (annotation?.coordinate.longitude)!) as! Double
                         exhibit?.setValue(lat, forKey: "lat")
                         exhibit?.setValue(lon, forKey: "lon")
-                        setImagesToBeSaved()
+                        setPlantsToBeSaved()
                         print("Saving \(plantsToBeSaved.count) plants")
                         exhibit?.addToPlants(NSSet.init(array: plantsToBeSaved))
                         let imageName = "\(passedExhibitionId!.uuidString).png"
@@ -239,7 +263,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                         if hasImageBeenSaved == true {
                             do{
                                 try managedObjectContext!.save()
-                                updateExhibitionDelegate?.initializeGeofencingForUpdatedExhibition(updatedExhibition: exhibit!)
+                                updateExhibitionDelegate?.exhibitionIsUpdated(updatedExhibition: exhibit!)
                                 view.window?.rootViewController?.dismiss(animated: true, completion: nil)
                             } catch let error as NSError{
                                 print("Could not save \(error), \(error.userInfo)")
@@ -264,7 +288,9 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         }
     }
     
-    func setImagesToBeSaved() {
+    //Get the plants selected from the Plant View Controller
+    //Convert the type to NSManagedObject and store it in an array
+    func setPlantsToBeSaved() {
         let managedObjectContext = getManagedobjectContext()
         if managedObjectContext != nil {
             for plant in selectedPlants {
@@ -280,6 +306,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         }
     }
     
+    //Validate the exhibition form
     func isExhibitionFormValid() -> Bool {
         var isValid = true
         //Change the colors to default before validating the data
@@ -313,7 +340,6 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         
         if selectedPlants.count == 0 {
             addPlants.backgroundColor = .red
-            addPlants.setTitle("Choose at least 3 plants!", for: .normal)
             isValid = false
         }
         
@@ -329,6 +355,7 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         setDefaultStyleForFormElements()
     }
     
+    //Set the default style for form elements
     func setDefaultStyleForFormElements(){
         locationLabel.text = "Choose a location:"
         locationLabel.textColor = Constants.APP_COLOR_DARK
@@ -352,6 +379,10 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         exhibitDescription.attributedPlaceholder = NSAttributedString(string: "Exhibition Description", attributes: [NSAttributedString.Key.foregroundColor: UIColor(red: 0, green: 0, blue: 0.0980392, alpha: 0.22)])
     }
     
+    
+    //handle image selection
+    //Refered to an article from "theswiftdev.com"
+    //to implement handling if image selection
     @IBAction func selectImageForExhibition(_ sender: Any) {
         let chooseImageFromLibraryAction = UIAlertAction(title: "Library", style: .default) { (action: UIAlertAction) in
             self.getImage(from: .photoLibrary)
@@ -364,7 +395,9 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         alertController.addAction(cancelImageSelectionAction)
         present(alertController, animated: true, completion: nil)
     }
-    
+
+    //Refered to an article from "theswiftdev.com"
+    //to implement handling if image selection
     private func getImage(from sourceType: UIImagePickerController.SourceType) {
         if UIImagePickerController.isSourceTypeAvailable(sourceType) {
             let imagePickerController = UIImagePickerController()
@@ -374,17 +407,24 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         }
     }
     
+    //Refered to an article from "theswiftdev.com"
+    //to implement handling if image selection
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true) {
             guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
             self.exhibitionImage.image = image
         }
     }
-    
+
+    //Refered to an article from "theswiftdev.com"
+    //to implement handling if image selection
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    ///Refered to a StackOverflow answer to fetch the images from
+    ///FileManager API
+    ///If File Manger does not find the image a default image is returned
     func saveImageOfExhibition(image: UIImage, name: String) -> Bool {
         guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
             return false
@@ -423,6 +463,9 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
         performSegue(withIdentifier: Constants.PLANT_VIEW_SEGUE_IDENTIDIER, sender: self)
     }
     
+    ///Refered to a StackOverflow answer to fetch the images from
+    ///FileManager API
+    ///If File Manger does not find the image a default image is returned
     func getExhibitImage(name: String) -> UIImage {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(name).path) ?? UIImage(named: "plant")!

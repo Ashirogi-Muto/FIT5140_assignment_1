@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+//Decodable class to handle plant search api data
 struct PlantSearchResult: Decodable {
     let data: [PlantSearchItem]?
 }
