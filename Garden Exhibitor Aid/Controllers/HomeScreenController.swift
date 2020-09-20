@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, NewExhibtionCreated, ExhibitionDeleted, ExhibtionUpdated {
+class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, NewExhibtionCreated, ExhibitionDeleted, ExhibtionUpdated, DefaultExhibitionCreation {
     
     @IBOutlet weak var homeScreenMap: MKMapView!
     var exhibitions: [Exhibition] = []
@@ -20,6 +20,8 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
     var selectedAnnotationFromExhibitList: UUID? = nil
     var selectedAnnotationIdForDetail: UUID? = nil
     let locationManager = CLLocationManager()
+    var indicator = UIActivityIndicatorView()
+    @IBOutlet weak var homeScreenIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,26 +29,21 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .selected)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15)], for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor : Constants.APP_COLOR_DARK], for: .selected)
-
+        homeScreenIndicator.hidesWhenStopped = true
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
         locationManager.distanceFilter = 20
-
-        //Check if default echibitions have been created
-        //If not then create default exhibitions
-        let defaults = UserDefaults.standard
-        let haveExhibitsInitialised = defaults.bool(forKey: "exhibitInit")
-        print("haveExhibitsInitialised \(haveExhibitsInitialised)")
-        if haveExhibitsInitialised != true {
-            let initExhibit = InitializeExhibits()
-            initExhibit.creatDefaulteExhibits()
-            defaults.set(true, forKey: "exhibitInit")
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        //Check if default echibitions have been created
+        //If not then create default exhibitions
+        let initExhibit = InitializeExhibits()
+        initExhibit.startDefaultExhibitionProcess()
+        initExhibit.delegate = self
         setupHomeScreenMap()
+        homeScreenIndicator.stopAnimating()
     }
     override func viewDidDisappear(_ animated: Bool) {
         selectedAnnotationFromExhibitList = nil
@@ -209,6 +206,10 @@ class HomeScreenController: UIViewController, MKMapViewDelegate, CLLocationManag
             guard let region = region as? CLCircularRegion, region.identifier == name else { continue }
             locationManager.stopMonitoring(for: region)
         }
+    }
+    
+    func defaultExhibitionsCreated(allDone: Bool) {
+        setupHomeScreenMap()
     }
 }
 

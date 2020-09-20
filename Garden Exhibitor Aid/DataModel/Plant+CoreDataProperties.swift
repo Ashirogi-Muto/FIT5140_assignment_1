@@ -2,7 +2,7 @@
 //  Plant+CoreDataProperties.swift
 //  Garden Exhibitor Aid
 //
-//  Created by Kshitij Pandey on 14/09/20.
+//  Created by Kshitij Pandey on 20/09/20.
 //  Copyright © 2020 Kshitij Pandey. All rights reserved.
 //
 //
@@ -21,9 +21,8 @@ extension Plant {
     @NSManaged public var id: UUID?
     @NSManaged public var imageUrl: String?
     @NSManaged public var name: String?
-    @NSManaged public var plantDescription: String?
-    @NSManaged public var yearDiscovered: Int16
     @NSManaged public var scientificName: String?
+    @NSManaged public var yearDiscovered: Int16
     @NSManaged public var ofExhibition: Exhibition?
 
 }

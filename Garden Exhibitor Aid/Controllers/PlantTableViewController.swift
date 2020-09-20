@@ -135,9 +135,8 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
                 let year = plant.yearDiscovered
                 let id = plant.id
                 let imageUrl = plant.imageUrl
-                let description = plant.plantDescription
                 let scientificName = plant.scientificName
-                let plantModel = PlantModel(name: name, plantDescription: description, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
+                let plantModel = PlantModel(name: name, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
                 filteredPlants.append(plantModel)
             }
             
@@ -162,7 +161,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
     }
     
     func performSearchPlantApiCall(searchText: String) {
-        let finalUrl = Constants.TREFLE_BASE_URL + "&q=" + searchText
+        let finalUrl = Constants.TREFLE_SEARCH_URL + "&q=" + searchText
         if let url = URL(string: finalUrl) {
             let session = URLSession.shared
             let task = session.dataTask(with: url) { (data, response, error) in
@@ -183,7 +182,7 @@ class PlantTableViewController: UITableViewController, UISearchBarDelegate, UITe
                                     let year = item.year ?? 0
                                     let scientificName = item.scientific_name
                                     if name.count > 0 {
-                                        let plantModel = PlantModel(name: name, plantDescription: "No Description", imageUrl: imageUrl,scientificName: scientificName, yearDiscovered: year, family: family, id: nil)
+                                        let plantModel = PlantModel(name: name, imageUrl: imageUrl,scientificName: scientificName, yearDiscovered: year, family: family, id: nil)
                                         self.filteredPlants.append(plantModel)
                                         self.indicator.stopAnimating()
                                         self.tableView.reloadData()

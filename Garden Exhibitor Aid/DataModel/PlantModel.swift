@@ -12,7 +12,6 @@ import Foundation
 //convert the plant search data type to this model
 struct PlantModel {
     let name: String?
-    let plantDescription: String?
     let imageUrl: String?
     let scientificName: String?
     let yearDiscovered: Int16

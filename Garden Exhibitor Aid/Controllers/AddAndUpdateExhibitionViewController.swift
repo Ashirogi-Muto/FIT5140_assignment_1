@@ -145,13 +145,12 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
     func typeCastPlantDataToModeForm(plantArray: [Plant]) {
         for plant in plantArray {
             let name = plant.name
-            let plantDescription = plant.plantDescription
             let imageUrl = plant.imageUrl
             let scientificName = plant.scientificName
             let year = plant.yearDiscovered
             let family = plant.family
             let id = plant.id
-            let plantModel = PlantModel(name: name, plantDescription: plantDescription, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
+            let plantModel = PlantModel(name: name, imageUrl: imageUrl, scientificName: scientificName, yearDiscovered: year, family: family, id: id)
             selectedPlants.append(plantModel)
         }
         addPlants.setTitle("\(selectedPlants.count) plants", for: .normal)
@@ -298,7 +297,6 @@ class AddAndUpdateExhibitionViewController: UIViewController, MKMapViewDelegate,
                 newPlantItem.family = plant.family
                 newPlantItem.name = plant.name
                 newPlantItem.imageUrl = plant.imageUrl
-                newPlantItem.plantDescription = plant.plantDescription
                 newPlantItem.yearDiscovered = plant.yearDiscovered
                 newPlantItem.id = plant.id ?? UUID()
                 plantsToBeSaved.append(newPlantItem)
